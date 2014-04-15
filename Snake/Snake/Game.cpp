@@ -11,7 +11,7 @@ void Game::Initialize()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-	window = SDL_CreateWindow("Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow("Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
 
 	SDL_GL_CreateContext(window);
 
@@ -23,7 +23,6 @@ void Game::Initialize()
 
 void Game::Run()
 {
-	const float lightskycolor[] = { 0.53f, 0.81f, 0.98f, 0.0f };
 	bool quit = false;
 	SDL_Event e;
 
@@ -40,16 +39,40 @@ void Game::Run()
 			//User presses a key
 			else if (e.type == SDL_KEYDOWN)
 			{
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_p:
+
+					std::cout << mouse.x << " " << mouse.y << "\n";
+					break;
+				}
+			}
+			else if (e.type == SDL_MOUSEBUTTONDOWN)
+			{
+				int x, y; 
+				SDL_GetMouseState(&x, &y);
+				mouse.x = x;
+				mouse.y = y;
+
+				renderer.ProcessSelection(x, y);
 				
 			}
-			else if (e.type == SDL_MOUSEMOTION)
+			else if (e.type == SDL_WINDOWEVENT)
 			{
+				switch (e.window.event)
+				{
+					case SDL_WINDOWEVENT_RESIZED:
+						renderer.Resize(e.window.data1, e.window.data2);
+						break;
+				}
 			}
 		}
 
+		renderer.Update();
 		renderer.Draw();
 
 		SDL_GL_SwapWindow(window);
 	}
+
 	SDL_Quit();
 }

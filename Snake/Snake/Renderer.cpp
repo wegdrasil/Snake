@@ -11,11 +11,19 @@ Renderer::~Renderer(){}
 void Renderer::Initialize()
 {
 	std::vector<GLuint> shaderList;
+	std::vector<GLuint> selectionShaderList;
 
 	shaderList.push_back(CreateShaderFromTextFile(GL_VERTEX_SHADER, "Shaders\\VS.glsl"));
 	shaderList.push_back(CreateShaderFromTextFile(GL_FRAGMENT_SHADER, "Shaders\\FS.glsl"));
 	shaderProgram = CreateProgram(shaderList);
 	unfMat = glGetUniformLocation(shaderProgram, "uMat");
+
+	selectionShaderList.push_back(CreateShaderFromTextFile(GL_VERTEX_SHADER, "Shaders\\VS.glsl"));
+	selectionShaderList.push_back(CreateShaderFromTextFile(GL_FRAGMENT_SHADER, "Shaders\\selection.fs"));
+	selectionProgram = CreateProgram(selectionShaderList);
+	unfMatSel = glGetUniformLocation(selectionProgram, "uMat");
+	unfCode   = glGetUniformLocation(selectionProgram, "uCode");
+	
 
 	const float quadVertices[] = 
 	{
@@ -43,21 +51,67 @@ void Renderer::Initialize()
 	glGenBuffers(1, &IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
+
+	glViewport(0, 0, 640, 480);
+}
+
+void Renderer::Update()
+{
+	View = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	MVP = Projection * View * Model;
 }
 
 void Renderer::Draw()
 {
 	const float lightskycolor[] = { 0.53f, 0.81f, 0.98f, 0.0f };
 	glClearBufferfv(GL_COLOR, 0, lightskycolor);
-
-	View = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	glm::mat4 MVP = Projection * View * Model;
+	
 	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-
+	
 	glBindVertexArray(VAO);
 	glUseProgram(shaderProgram);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 	glFlush();
+}
+
+void Renderer::DrawSelection()
+{
+	const float blackcolor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	glClearBufferfv(GL_COLOR, 0, blackcolor);
+
+	glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
+
+	glUniform1i(unfCode, 10);
+	
+	glBindVertexArray(VAO);
+	glUseProgram(selectionProgram);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+	glFlush();
+}
+
+void Renderer::ProcessSelection(int x, int y)
+{
+	unsigned char response[4];
+	GLint viewport[4];
+
+	DrawSelection();
+	DrawSelection();
+
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glReadPixels(x, viewport[3] - y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, &response);
+	switch (response[0]) 
+	{
+		case 0: printf("Nothing Picked \n"); break;
+		case 10: printf("Picked square\n"); break;
+		default:printf("Res: %d\n", response[0]);
+	}
+}
+
+void Renderer::Resize(int w, int h)
+{
+	float aspect = (float)w / (float)h;
+	Projection = glm::perspective(45.0f, aspect, 0.0f, 100.0f);
+	glViewport(0, 0, w, h);
 }
 
 GLuint Renderer::CreateShaderFromTextFile(GLenum shadertype, char const* filename)

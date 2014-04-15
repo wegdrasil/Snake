@@ -11,6 +11,8 @@ class Game
 	SDL_Window *window;
 	Renderer renderer;
 
+	glm::vec2 mouse;
+
 public:
 
 	Game();
