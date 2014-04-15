@@ -41,12 +41,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glew-1.10.0\include\GL;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2-2.0.3\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glm;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glew-1.10.0\include\GL;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2-2.0.3\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glew-1.10.0\lib\Release\Win32;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glew-1.10.0\include\GL;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2-2.0.3\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glm;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glew-1.10.0\include\GL;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2-2.0.3\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glew-1.10.0\lib\Release\Win32;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -84,9 +84,11 @@
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Renderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

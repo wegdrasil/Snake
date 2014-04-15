@@ -16,6 +16,9 @@ void Game::Initialize()
 	SDL_GL_CreateContext(window);
 
 	glewInit();
+
+	renderer.Initialize();
+
 }
 
 void Game::Run()
@@ -44,9 +47,7 @@ void Game::Run()
 			}
 		}
 
-		//Render code here
-		const float lightskycolor[] = { 0.53f, 0.81f, 0.98f, 0.0f };
-		glClearBufferfv(GL_COLOR, 0, lightskycolor);
+		renderer.Draw();
 
 		SDL_GL_SwapWindow(window);
 	}
