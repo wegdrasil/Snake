@@ -43,7 +43,7 @@ void App::Run()
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_p:
-					std::cout << mouse.x << " " << mouse.y << "\n";
+					std::cout << gui.mouseX << " " << gui.mouseY << "\n";
 					break;
 				case SDLK_w:
 					break;
@@ -55,15 +55,22 @@ void App::Run()
 					break;
 				}
 			}
+			else if (e.type == SDL_MOUSEMOTION)
+			{
+				gui.mouseX = e.motion.x;
+				gui.mouseY = e.motion.y;
+			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN)
 			{
-				int x, y; 
-				SDL_GetMouseState(&x, &y);
-				mouse.x = x;
-				mouse.y = y;
+				if (e.button.button == true)
+					gui.mousedown = true;
 
-				renderer.ProcessSelection(x, y);
-				
+				renderer.ProcessSelection(gui.mouseX, gui.mouseY);
+			}
+			else if (e.type == SDL_MOUSEBUTTONUP)
+			{
+				if (e.button.button == true)
+					gui.mousedown = false;
 			}
 			else if (e.type == SDL_WINDOWEVENT)
 			{

@@ -3,6 +3,7 @@
 
 class GUI
 {
+public:
 	int mouseX;
 	int mouseY;
 	bool mousedown;
@@ -10,7 +11,6 @@ class GUI
 	bool hot;
 	bool active;
 
-public:
 	GUI();
 	~GUI();
 };

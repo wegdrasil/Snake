@@ -5,6 +5,7 @@
 
 class Widget
 {
+protected:
 	Sprite sprite;
 
 public:

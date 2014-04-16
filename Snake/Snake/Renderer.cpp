@@ -95,7 +95,11 @@ void Renderer::ProcessSelection(int x, int y)
 	switch (response[0]) 
 	{
 		case 0: printf("Nothing Picked \n"); break;
-		case 10: printf("Picked red square\n"); break;
+		case 10:
+		{			
+				   square[0].GetSprite().SetColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+				   printf("Picked red square\n"); break;
+		}
 		case 20: printf("Picked green square\n"); break;
 		case 30: printf("Picked blue square\n"); break;
 		default:printf("Res: %d\n", response[0]);
