@@ -24,33 +24,7 @@ void Renderer::Initialize()
 	unfMatSel = glGetUniformLocation(selectionProgram, "uMat");
 	unfCode   = glGetUniformLocation(selectionProgram, "uCode");
 	
-
-	const float quadVertices[] = 
-	{
-		//  X     Y     Z           U     V
-		+0.5f, +0.5f, 0.0f,      1.0f, 1.0f, //v0   
-		-0.5f, +0.5f, 0.0f,		 0.0f, 1.0f, //v1   
-		+0.5f, -0.5f, 0.0f,		 1.0f, 0.0f, //v2   
-		-0.5f, -0.5f, 0.0f,		 0.0f, 0.0f  //v3
-	};
-
-	const unsigned short quadIndices[] =	{	0, 2, 1,	1, 3, 2	};
-
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char*)0 + 0 * sizeof(float));
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (char*)0 + 3 * sizeof(float));
-
-	glGenBuffers(1, &IBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
+	square.Initialize();
 
 	glViewport(0, 0, 640, 480);
 }
@@ -68,9 +42,11 @@ void Renderer::Draw()
 	
 	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
 	
-	glBindVertexArray(VAO);
+	
 	glUseProgram(shaderProgram);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+	
+	square.GetSprite().Draw();
+
 	glFlush();
 }
 
@@ -83,9 +59,9 @@ void Renderer::DrawSelection()
 
 	glUniform1i(unfCode, 10);
 	
-	glBindVertexArray(VAO);
+	//glBindVertexArray(VAO);
 	glUseProgram(selectionProgram);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
+	square.GetSprite().Draw(); 
 	glFlush();
 }
 

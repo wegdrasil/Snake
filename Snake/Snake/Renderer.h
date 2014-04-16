@@ -12,14 +12,13 @@
 #include <vector>
 #include <time.h>
 
+#include "Widget.h"
+
 class Renderer
 {
 	GLuint shaderProgram;
 	GLuint selectionProgram;
 
-	GLuint VAO;
-	GLuint VBO;
-	GLuint IBO;
 	GLuint unfMat;
 	GLuint unfMatSel;
 	GLuint unfCode;
@@ -28,7 +27,9 @@ class Renderer
 	glm::mat4 View;
 	glm::mat4 Model;
 	glm::mat4 MVP;
-	
+
+	Widget square;
+
 public:
 	Renderer();
 	~Renderer();
