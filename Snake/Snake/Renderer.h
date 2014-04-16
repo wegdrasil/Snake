@@ -29,8 +29,9 @@ class Renderer
 	glm::mat4 MVP;
 
 	Widget square;
-
+	
 public:
+		
 	Renderer();
 	~Renderer();
 	

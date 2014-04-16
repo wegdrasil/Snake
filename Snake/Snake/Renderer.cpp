@@ -6,6 +6,7 @@ Renderer::Renderer()
 	View = glm::mat4(1.0f);
 	Model = glm::mat4(1.0f);
 }
+
 Renderer::~Renderer(){}
 
 void Renderer::Initialize()
@@ -25,14 +26,15 @@ void Renderer::Initialize()
 	unfCode   = glGetUniformLocation(selectionProgram, "uCode");
 	
 	square.Initialize();
-
+	square.GetSprite().UpdateModelMatrix(glm::vec3(1.0f, 0.0f, 0.0f), 45.0f, glm::vec3(2.0f, 2.0f, 0.0f));
 	glViewport(0, 0, 640, 480);
+
 }
 
 void Renderer::Update()
 {
-	View = glm::lookAt(glm::vec3(0.0f, 0.0f, -5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	MVP = Projection * View * Model;
+	View = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	MVP = Projection * View * square.GetSprite().GetModelMatrix();
 }
 
 void Renderer::Draw()
@@ -41,8 +43,7 @@ void Renderer::Draw()
 	glClearBufferfv(GL_COLOR, 0, lightskycolor);
 	
 	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-	
-	
+		
 	glUseProgram(shaderProgram);
 	
 	square.GetSprite().Draw();
@@ -59,7 +60,6 @@ void Renderer::DrawSelection()
 
 	glUniform1i(unfCode, 10);
 	
-	//glBindVertexArray(VAO);
 	glUseProgram(selectionProgram);
 	square.GetSprite().Draw(); 
 	glFlush();

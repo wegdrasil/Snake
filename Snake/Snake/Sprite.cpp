@@ -13,6 +13,9 @@ Sprite::Sprite()
 	indices[3] = 1;
 	indices[4] = 3;
 	indices[5] = 2;
+
+	ModelMatrix = glm::mat4(1.0f);
+
 }
 
 Sprite::~Sprite()
@@ -38,20 +41,9 @@ void Sprite::Initialize()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 }
 
-void Sprite::Translate(glm::vec3 t)
+void Sprite::UpdateModelMatrix(glm::vec3 t, float angle, glm::vec3 s)
 {
-}
-
-void Sprite::Scale(glm::vec3 s)
-{
-}
-
-void Sprite::Rotate(float angle)
-{
-}
-
-void Sprite::UpdateModelMatrix()
-{
+	ModelMatrix = glm::scale(glm::rotate(glm::translate(ModelMatrix, t), angle, glm::vec3(0.0f, 0.0f, 1.0f)), s);
 }
 
 void Sprite::Draw()

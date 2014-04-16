@@ -39,11 +39,19 @@ void Game::Run()
 			//User presses a key
 			else if (e.type == SDL_KEYDOWN)
 			{
+				float offset = 0.0007f;
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_p:
-
 					std::cout << mouse.x << " " << mouse.y << "\n";
+					break;
+				case SDLK_w:
+					break;
+				case SDLK_s:
+					break;
+				case SDLK_a:
+					break;
+				case SDLK_d:
 					break;
 				}
 			}

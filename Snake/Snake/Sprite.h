@@ -26,10 +26,8 @@ public:
 	void Initialize();
 	void Draw();
 
-	void Translate(glm::vec3 t);
-	void Scale(glm::vec3 s);
-	void Rotate(float angle);
-	void UpdateModelMatrix();
+	void UpdateModelMatrix(glm::vec3 t, float angle, glm::vec3 s);
+	glm::mat4& GetModelMatrix() { return ModelMatrix; };
 		
 };
 
