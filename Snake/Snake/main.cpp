@@ -5,13 +5,13 @@
 // --Bialystok University of Technology 2014
 //----------------------------------------------------------------------
 
-#include "Game.h"
+#include "Application.h"
 
 int main(int argc, char *args[])
 {
-	Game game;
-	game.Initialize();
-	game.Run();
+	App app;
+	app.Initialize();
+	app.Run();
 
 	return 0;
 }

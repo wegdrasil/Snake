@@ -1,9 +1,9 @@
-#include "Game.h"
+#include "Application.h"
 
-Game::Game() {}
-Game::~Game(){}
+App::App() {}
+App::~App(){}
 
-void Game::Initialize()
+void App::Initialize()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
@@ -21,7 +21,7 @@ void Game::Initialize()
 
 }
 
-void Game::Run()
+void App::Run()
 {
 	bool quit = false;
 	SDL_Event e;

@@ -45,7 +45,7 @@ void Sprite::UpdateModelMatrix(glm::vec3 t, float angle, glm::vec3 s)
 	ModelMatrix = glm::scale(glm::rotate(glm::translate(ModelMatrix, t), angle, glm::vec3(0.0f, 0.0f, 1.0f)), s);
 }
 
-void Sprite::SetColor(glm::vec3 c)
+void Sprite::SetColor(glm::vec4 c)
 {
 	color = c;
 }
