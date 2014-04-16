@@ -30,7 +30,7 @@ class Renderer
 	glm::mat4 Model;
 	glm::mat4 MVP;
 
-	Widget square;
+	Widget square[3];
 	
 public:
 		

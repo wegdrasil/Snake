@@ -26,9 +26,18 @@ void Renderer::Initialize()
 	unfMatSel = glGetUniformLocation(selectionProgram, "uMat");
 	unfCode   = glGetUniformLocation(selectionProgram, "uCode");
 	
-	square.Initialize();
-	square.GetSprite().UpdateModelMatrix(glm::vec3(1.0f, 0.0f, 0.0f), 45.0f, glm::vec3(2.0f, 2.0f, 0.0f));
-	square.GetSprite().SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+	square[0].Initialize();
+	square[0].GetSprite().UpdateModelMatrix(glm::vec3(1.0f, 0.0f, 0.0f), 45.0f, glm::vec3(2.0f, 2.0f, 0.0f));
+	square[0].GetSprite().SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+	
+	square[1].Initialize();
+	square[1].GetSprite().UpdateModelMatrix(glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f));
+	square[1].GetSprite().SetColor(glm::vec3(0.0f, 1.0f, 0.0f));
+
+	square[2].Initialize();
+	square[2].GetSprite().UpdateModelMatrix(glm::vec3(0.0f, -2.0f, 0.0f), 10.0f, glm::vec3(0.5f, 0.5f, 0.0f));
+	square[2].GetSprite().SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
+
 	glViewport(0, 0, 640, 480);
 
 }
@@ -36,21 +45,23 @@ void Renderer::Initialize()
 void Renderer::Update()
 {
 	View = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	MVP = Projection * View * square.GetSprite().GetModelMatrix();
 }
 
 void Renderer::Draw()
 {
 	const float lightskycolor[] = { 0.53f, 0.81f, 0.98f, 0.0f };
 	glClearBufferfv(GL_COLOR, 0, lightskycolor);
-	
-	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniform3fv(unfColor, 1, glm::value_ptr(square.GetSprite().GetColor()));
-	
-	glUseProgram(shaderProgram);
-	
-	square.GetSprite().Draw();
 
+	glUseProgram(shaderProgram);
+
+	for (int i = 0; i < 3; i++)
+	{
+		MVP = Projection * View * square[i].GetSprite().GetModelMatrix();
+		glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniform3fv(unfColor, 1, glm::value_ptr(square[i].GetSprite().GetColor()));
+		square[i].GetSprite().Draw();
+	}
+	
 	glFlush();
 }
 
@@ -59,12 +70,15 @@ void Renderer::DrawSelection()
 	const float blackcolor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	glClearBufferfv(GL_COLOR, 0, blackcolor);
 
-	glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-
-	glUniform1i(unfCode, 10);
-	
 	glUseProgram(selectionProgram);
-	square.GetSprite().Draw(); 
+	
+	for (int i = 0; i < 3; i++)
+	{
+		MVP = Projection * View * square[i].GetSprite().GetModelMatrix();
+		glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniform1i(unfCode, (i+1)*10);
+		square[i].GetSprite().Draw();
+	}
 	glFlush();
 }
 
@@ -81,7 +95,9 @@ void Renderer::ProcessSelection(int x, int y)
 	switch (response[0]) 
 	{
 		case 0: printf("Nothing Picked \n"); break;
-		case 10: printf("Picked square\n"); break;
+		case 10: printf("Picked red square\n"); break;
+		case 20: printf("Picked green square\n"); break;
+		case 30: printf("Picked blue square\n"); break;
 		default:printf("Res: %d\n", response[0]);
 	}
 }

@@ -15,7 +15,6 @@ Sprite::Sprite()
 	indices[5] = 2;
 
 	ModelMatrix = glm::mat4(1.0f);
-
 }
 
 Sprite::~Sprite()
