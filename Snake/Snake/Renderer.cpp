@@ -18,6 +18,7 @@ void Renderer::Initialize()
 	shaderList.push_back(CreateShaderFromTextFile(GL_FRAGMENT_SHADER, "Shaders\\FS.glsl"));
 	shaderProgram = CreateProgram(shaderList);
 	unfMat = glGetUniformLocation(shaderProgram, "uMat");
+	unfColor = glGetUniformLocation(shaderProgram, "uColor");
 
 	selectionShaderList.push_back(CreateShaderFromTextFile(GL_VERTEX_SHADER, "Shaders\\VS.glsl"));
 	selectionShaderList.push_back(CreateShaderFromTextFile(GL_FRAGMENT_SHADER, "Shaders\\selection.fs"));
@@ -27,6 +28,7 @@ void Renderer::Initialize()
 	
 	square.Initialize();
 	square.GetSprite().UpdateModelMatrix(glm::vec3(1.0f, 0.0f, 0.0f), 45.0f, glm::vec3(2.0f, 2.0f, 0.0f));
+	square.GetSprite().SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 	glViewport(0, 0, 640, 480);
 
 }
@@ -43,7 +45,8 @@ void Renderer::Draw()
 	glClearBufferfv(GL_COLOR, 0, lightskycolor);
 	
 	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-		
+	glUniform3fv(unfColor, 1, glm::value_ptr(square.GetSprite().GetColor()));
+	
 	glUseProgram(shaderProgram);
 	
 	square.GetSprite().Draw();

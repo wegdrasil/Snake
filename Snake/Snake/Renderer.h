@@ -20,6 +20,8 @@ class Renderer
 	GLuint selectionProgram;
 
 	GLuint unfMat;
+	GLuint unfColor;
+
 	GLuint unfMatSel;
 	GLuint unfCode;
 

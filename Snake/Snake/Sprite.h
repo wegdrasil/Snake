@@ -12,6 +12,7 @@ class Sprite
 {
 	Vertex vertices[4];
 	unsigned short indices[6];
+	glm::vec3 color;
 
 	GLuint VAO; //? what about sprite batch 
 	GLuint VBO;
@@ -28,7 +29,9 @@ public:
 
 	void UpdateModelMatrix(glm::vec3 t, float angle, glm::vec3 s);
 	glm::mat4& GetModelMatrix() { return ModelMatrix; };
-		
+
+	void SetColor(glm::vec3 c);
+	glm::vec3& GetColor() { return color; }
 };
 
 #endif

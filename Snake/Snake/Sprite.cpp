@@ -46,9 +46,14 @@ void Sprite::UpdateModelMatrix(glm::vec3 t, float angle, glm::vec3 s)
 	ModelMatrix = glm::scale(glm::rotate(glm::translate(ModelMatrix, t), angle, glm::vec3(0.0f, 0.0f, 1.0f)), s);
 }
 
+void Sprite::SetColor(glm::vec3 c)
+{
+	color = c;
+}
+
 void Sprite::Draw()
 {
 	glBindVertexArray(VAO);
+	
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
-
