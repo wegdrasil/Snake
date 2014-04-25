@@ -38,16 +38,13 @@ void Sprite::Initialize()
 	glGenBuffers(1, &IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	color = colorInactive;
 }
 
 void Sprite::UpdateModelMatrix(glm::vec3 t, float angle, glm::vec3 s)
 {
 	ModelMatrix = glm::scale(glm::rotate(glm::translate(ModelMatrix, t), angle, glm::vec3(0.0f, 0.0f, 1.0f)), s);
-}
-
-void Sprite::SetColor(glm::vec4 c)
-{
-	color = c;
 }
 
 void Sprite::Draw()

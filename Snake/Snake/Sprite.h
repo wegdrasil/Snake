@@ -13,6 +13,9 @@ class Sprite
 	Vertex vertices[4];
 	unsigned short indices[6];
 	glm::vec4 color;
+	glm::vec4 colorHot;
+	glm::vec4 colorInactive;
+	glm::vec4 colorActive;
 
 	GLuint VAO; // ?what about sprite batch, for optimalization? 
 	GLuint VBO;
@@ -32,8 +35,38 @@ public:
 	void UpdateModelMatrix(glm::vec3 t, float angle, glm::vec3 s);
 	glm::mat4& GetModelMatrix() { return ModelMatrix; };
 
-	void SetColor(glm::vec4 c);
 	glm::vec4& GetColor() { return color; }
+	void SetColor(glm::vec4 c)
+	{
+		color = c;
+	}
+
+	glm::vec4& GetColorInactive() { return colorInactive; }
+	void SetColorInactive(glm::vec4 c)
+	{
+		colorInactive = c;
+	}
+
+	glm::vec4& GetColorHot() { return colorHot; }
+	void SetColorHot(glm::vec4 c)
+	{
+		colorHot = c;
+	}
+
+	glm::vec4& GetColorActive() { return colorActive; }
+	void SetColorActive(glm::vec4 c)
+	{
+		colorActive = c;
+	}
+
+	void SetId(int id)
+	{
+		idUniform = id;
+	}
+	int GetId()
+	{
+		return idUniform;
+	}
 };
 
 #endif

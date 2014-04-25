@@ -66,7 +66,7 @@ void Renderer::DrawSelection()
 	{
 		MVP = Projection * View * gui->buttons[i].GetSprite().GetModelMatrix();
 		glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniform1i(unfCode, (i+1)*10);
+		glUniform1i(unfCode, gui->buttons[i].GetSprite().GetId());
 		gui->buttons[i].GetSprite().Draw();
 	}
 	glFlush();

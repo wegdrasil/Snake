@@ -61,6 +61,7 @@ void App::Run()
 
 				if (id == 0)
 				{
+					gui.idHot = 0;
 					gui.hot = false;
 				}
 				else
@@ -106,7 +107,8 @@ void App::Run()
 				}
 			}
 		}
-
+		
+		gui.Update();
 		renderer.Update();
 		renderer.Draw();
 
