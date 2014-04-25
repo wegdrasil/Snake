@@ -17,8 +17,8 @@ void App::Initialize()
 
 	glewInit();
 
-	renderer.Initialize();
-
+	gui.Initialize();
+	renderer.Initialize(&gui);
 }
 
 void App::Run()
@@ -28,15 +28,12 @@ void App::Run()
 
 	while (!quit)
 	{
-		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
-			//User requests quit
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
 			}
-			//User presses a key
 			else if (e.type == SDL_KEYDOWN)
 			{
 				float offset = 0.0007f;
@@ -59,18 +56,45 @@ void App::Run()
 			{
 				gui.mouseX = e.motion.x;
 				gui.mouseY = e.motion.y;
+				
+				unsigned char id = renderer.ProcessSelection(gui.mouseX, gui.mouseY);
+
+				if (id == 0)
+				{
+					gui.hot = false;
+				}
+				else
+				{	
+					gui.idHot = id;
+					gui.hot = true;
+				}
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN)
 			{
 				if (e.button.button == true)
 					gui.mousedown = true;
 
-				renderer.ProcessSelection(gui.mouseX, gui.mouseY);
+				unsigned char id = renderer.ProcessSelection(gui.mouseX, gui.mouseY);
+				
+				if ( id == 0)
+				{
+					gui.active = false;
+				}
+				else
+				{
+					gui.idActive = id;
+					gui.active   = true;
+				}
+			
 			}
 			else if (e.type == SDL_MOUSEBUTTONUP)
 			{
 				if (e.button.button == true)
 					gui.mousedown = false;
+
+				gui.idActive = 0;
+				gui.active = false;
+
 			}
 			else if (e.type == SDL_WINDOWEVENT)
 			{

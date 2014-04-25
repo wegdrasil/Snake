@@ -14,11 +14,13 @@ class Sprite
 	unsigned short indices[6];
 	glm::vec4 color;
 
-	GLuint VAO; //? what about sprite batch 
+	GLuint VAO; // ?what about sprite batch, for optimalization? 
 	GLuint VBO;
 	GLuint IBO;
 
 	glm::mat4 ModelMatrix;
+
+	int idUniform;
 
 public:
 	Sprite();

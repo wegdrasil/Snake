@@ -1,6 +1,8 @@
 #ifndef SGUIH
 #define SGUIH
 
+#include "Button.h"
+
 class GUI
 {
 public:
@@ -11,8 +13,17 @@ public:
 	bool hot;
 	bool active;
 
+	unsigned char idHot;
+	unsigned char idActive;
+	
+	Button buttons[3];
+
 	GUI();
 	~GUI();
+
+	void Initialize();
+	void Update();
+	void Draw();
 };
 
 #endif

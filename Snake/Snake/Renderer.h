@@ -12,7 +12,7 @@
 #include <vector>
 #include <time.h>
 
-#include "Widget.h"
+#include "GUI.h"
 
 class Renderer
 {
@@ -30,18 +30,18 @@ class Renderer
 	glm::mat4 Model;
 	glm::mat4 MVP;
 
-	Widget square[3];
-	
+	GUI* gui;
+
 public:
 		
 	Renderer();
 	~Renderer();
 	
-	void Initialize();
+	void Initialize(GUI* gui);
 	void Update();
 	void Draw();
 	void DrawSelection();
-	void ProcessSelection(int x, int y);
+	unsigned char ProcessSelection(int x, int y);
 	void Resize(int w, int h);
 
 	GLuint Renderer::CreateShaderFromTextFile(GLenum shadertype, char const* filename);

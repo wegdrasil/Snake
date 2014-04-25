@@ -12,5 +12,5 @@ Widget::~Widget()
 
 void Widget::Initialize()
 {
-	sprite.Initialize();
+	
 }

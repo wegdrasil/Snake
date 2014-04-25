@@ -7,15 +7,13 @@ class Widget
 {
 protected:
 	Sprite sprite;
-
+	
 public:
 	Widget();
 	~Widget();
 
 	Sprite& GetSprite() { return sprite; };
-
 	void Initialize();
-
 };
 
 #endif

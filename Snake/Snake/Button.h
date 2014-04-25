@@ -8,6 +8,7 @@ class Button :	public Widget
 public:
 	Button();
 	~Button();
+	void Initialize();
 };
 
 #endif
