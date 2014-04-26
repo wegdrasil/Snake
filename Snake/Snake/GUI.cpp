@@ -25,6 +25,7 @@ void GUI::Initialize()
 	ptr->SetColorActive(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	ptr->SetColorHot(glm::vec4(0.0f, 0.75f, 0.0f, 1.0f));
 	ptr->SetId(10);
+	ptr->SetTextured(true);
 	ptr->Initialize();
 
 	scrollbar.Initialize();
@@ -65,8 +66,10 @@ void GUI::Update()
 		if (scrollbar.buttons[0].GetSprite().GetId() == idActive)
 		{
 			int delta = mouseYLast - mouseY;
+			
 			background = (-(scrollbar.sliderPosY - 2.5f) / 5.0f);
-			scrollbar.Scroll(delta * 0.00175f);		
+			scrollbar.Scroll(delta * 0.00175f);
+			
 		}
 	}
 }

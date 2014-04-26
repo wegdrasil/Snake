@@ -14,22 +14,24 @@ void Scrollbar::Initialize()
 {
 	//slider
 	Sprite* ptr = &buttons[0].GetSprite();
-	ptr->UpdateModelMatrix(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, glm::vec3(0.5f, 0.5f, 0.0f));
+	ptr->UpdateModelMatrix(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, glm::vec3(0.25f, 0.5f, 0.0f));
 	ptr->SetColorInactive(glm::vec4(0.5f, 0.0f, 0.0f, 1.0f));
 	ptr->SetColorActive(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	ptr->SetColorHot(glm::vec4(0.75f, 0.0f, 0.0f, 1.0f));
 	ptr->SetId(60);
+	ptr->SetTextured(false);
 	ptr->Initialize();
 
 	sliderPosY = 0.0f;
 
 	//bar
 	ptr = &buttons[1].GetSprite();
-	ptr->UpdateModelMatrix(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, glm::vec3(0.5f, 3.0f, 0.0f));
+	ptr->UpdateModelMatrix(glm::vec3(1.0f, 0.0f, 0.0f), 0.0f, glm::vec3(0.25f, 3.0f, 0.0f));
 	ptr->SetColorInactive(glm::vec4(0.0f, 0.5f, 0.0f, 1.0f));
 	ptr->SetColorActive(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
 	ptr->SetColorHot(glm::vec4(0.0f, 0.75f, 0.0f, 1.0f));
 	ptr->SetId(61);
+	ptr->SetTextured(false);
 	ptr->Initialize();
 
 	ptr = nullptr;

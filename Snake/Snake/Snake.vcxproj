@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\external\stb_image\stb_image.c" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="GUI.cpp" />
@@ -92,6 +93,7 @@
     <ClCompile Include="Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\external\stb_image\stb_image.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="GUI.h" />

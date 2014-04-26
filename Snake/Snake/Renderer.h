@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "..\..\external\stb_image\stb_image.h"
 
 #include <iostream>
 #include <string>
@@ -21,6 +22,7 @@ class Renderer
 
 	GLuint unfMat;
 	GLuint unfColor;
+	GLuint unfTexture;
 
 	GLuint unfMatSel;
 	GLuint unfCode;
@@ -43,7 +45,8 @@ public:
 	void DrawSelection();
 	unsigned char ProcessSelection(int x, int y);
 	void Resize(int w, int h);
-
+	
+	void LoadImage();
 	GLuint Renderer::CreateShaderFromTextFile(GLenum shadertype, char const* filename);
 	GLuint Renderer::CreateProgram(std::vector<unsigned> const& shaderList);
 };

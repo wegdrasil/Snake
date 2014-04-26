@@ -1,6 +1,7 @@
 #ifndef SSPRITEH
 #define SSPRITEH
 
+#include <SDL.h>
 #include <glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -24,6 +25,7 @@ class Sprite
 	glm::mat4 ModelMatrix;
 
 	int idUniform;
+	bool textured;
 
 public:
 	Sprite();
@@ -66,6 +68,14 @@ public:
 	int GetId()
 	{
 		return idUniform;
+	}
+	void SetTextured(bool t)
+	{
+		textured = t;
+	}
+	int GetTextured()
+	{
+		return textured;
 	}
 };
 
