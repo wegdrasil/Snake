@@ -87,6 +87,7 @@
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Scrollbar.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Widget.cpp" />
   </ItemGroup>
@@ -95,6 +96,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Scrollbar.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Widget.h" />

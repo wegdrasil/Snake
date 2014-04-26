@@ -2,12 +2,16 @@
 #define SGUIH
 
 #include "Button.h"
+#include "Scrollbar.h"
 
 class GUI
 {
 public:
 	int mouseX;
 	int mouseY;
+	int mouseXLast;
+	int mouseYLast;
+
 	bool mousedown;
 
 	bool hot;
@@ -16,7 +20,10 @@ public:
 	unsigned char idHot;
 	unsigned char idActive;
 	
-	Button buttons[3];
+	Button buttons[1];
+	Scrollbar scrollbar;
+
+	float background;
 
 	GUI();
 	~GUI();

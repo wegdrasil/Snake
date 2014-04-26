@@ -11,7 +11,7 @@ void App::Initialize()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-	window = SDL_CreateWindow("Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+	window = SDL_CreateWindow("Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
 
 	SDL_GL_CreateContext(window);
 
@@ -54,6 +54,9 @@ void App::Run()
 			}
 			else if (e.type == SDL_MOUSEMOTION)
 			{
+				gui.mouseXLast = gui.mouseX;
+				gui.mouseYLast = gui.mouseY;
+
 				gui.mouseX = e.motion.x;
 				gui.mouseY = e.motion.y;
 				
@@ -66,6 +69,9 @@ void App::Run()
 				}
 				else
 				{	
+					if (gui.idHot != id)
+						gui.hot = false;
+
 					gui.idHot = id;
 					gui.hot = true;
 				}

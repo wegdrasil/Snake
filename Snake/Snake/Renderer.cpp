@@ -2,7 +2,7 @@
 
 Renderer::Renderer()
 {
-	Projection = glm::perspective(45.0f, 640.0f/480.0f, 0.0f, 100.0f);
+	Projection = glm::perspective(45.0f, 800.0f/600.0f, 0.0f, 100.0f);
 	View = glm::mat4(1.0f);
 	Model = glm::mat4(1.0f);
 }
@@ -28,7 +28,7 @@ void Renderer::Initialize(GUI* g)
 	unfMatSel = glGetUniformLocation(selectionProgram, "uMat");
 	unfCode   = glGetUniformLocation(selectionProgram, "uCode");
 	
-	glViewport(0, 0, 640, 480);
+	glViewport(0, 0, 800, 600);
 
 }
 
@@ -39,7 +39,7 @@ void Renderer::Update()
 
 void Renderer::Draw()
 {
-	const float lightskycolor[] = { 0.53f, 0.81f, 0.98f, 0.0f };
+	const float lightskycolor[] = { gui->background, 0.81f, 0.98f, 0.0f };
 	glClearBufferfv(GL_COLOR, 0, lightskycolor);
 
 	glUseProgram(shaderProgram);
@@ -51,7 +51,19 @@ void Renderer::Draw()
 		glUniform4fv(unfColor, 1, glm::value_ptr(gui->buttons[i].GetSprite().GetColor()));
 		gui->buttons[i].GetSprite().Draw();
 	}
+
+	MVP = Projection * View * gui->scrollbar.buttons[1].GetSprite().GetModelMatrix();
+	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[1].GetSprite().GetColor()));
+	gui->scrollbar.buttons[1].GetSprite().Draw();
 	
+	MVP = Projection * View * gui->scrollbar.buttons[0].GetSprite().GetModelMatrix();
+	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[0].GetSprite().GetColor()));
+	gui->scrollbar.buttons[0].GetSprite().Draw();
+
+
+
 	glFlush();
 }
 
@@ -69,6 +81,21 @@ void Renderer::DrawSelection()
 		glUniform1i(unfCode, gui->buttons[i].GetSprite().GetId());
 		gui->buttons[i].GetSprite().Draw();
 	}
+
+	MVP = Projection * View * gui->scrollbar.buttons[1].GetSprite().GetModelMatrix();
+	glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniform1i(unfCode, gui->scrollbar.buttons[1].GetSprite().GetId());
+	gui->scrollbar.buttons[1].GetSprite().Draw();
+	
+	MVP = Projection * View * gui->scrollbar.buttons[0].GetSprite().GetModelMatrix();
+	glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniform1i(unfCode, gui->scrollbar.buttons[0].GetSprite().GetId());
+	gui->scrollbar.buttons[0].GetSprite().Draw();
+	
+
+
+	
+
 	glFlush();
 }
 

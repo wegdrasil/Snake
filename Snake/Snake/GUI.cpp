@@ -5,6 +5,8 @@ GUI::GUI()
 {
 	mouseX = 0;
 	mouseY = 0;
+	mouseXLast = 0;
+	mouseYLast = 0;
 	mousedown = false;
 
 	hot = false;
@@ -17,58 +19,56 @@ GUI::~GUI()
 
 void GUI::Initialize()
 {
-	buttons[0].GetSprite().UpdateModelMatrix(glm::vec3(1.0f, 0.0f, 0.0f), 45.0f, glm::vec3(2.0f, 2.0f, 0.0f));
-	buttons[0].GetSprite().SetColorInactive(glm::vec4(.5f, 0.0f, 0.0f, 1.0f));
-	buttons[0].GetSprite().SetColorActive(glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	buttons[0].GetSprite().SetColorHot(glm::vec4(.75f, 0.0f, 0.0f, 1.0f));
-	buttons[0].GetSprite().SetId(10);
-	buttons[0].GetSprite().Initialize();
+	Sprite* ptr = &buttons[0].GetSprite();
+	ptr->UpdateModelMatrix(glm::vec3(-1.0f, 1.0f, 0.0f), 0.0f, glm::vec3(0.5f, 0.5f, 0.0f));
+	ptr->SetColorInactive(glm::vec4(0.0f, 0.5f, 0.0f, 1.0f));
+	ptr->SetColorActive(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+	ptr->SetColorHot(glm::vec4(0.0f, 0.75f, 0.0f, 1.0f));
+	ptr->SetId(10);
+	ptr->Initialize();
 
-	buttons[1].GetSprite().UpdateModelMatrix(glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, glm::vec3(1.0f, 1.0f, 0.0f));
-	buttons[1].GetSprite().SetColorInactive(glm::vec4(0.0f, 0.5f, 0.0f, 1.0f));
-	buttons[1].GetSprite().SetColorActive(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-	buttons[1].GetSprite().SetColorHot(glm::vec4(0.0f, 0.75f, 0.0f, 1.0f));
-	buttons[1].GetSprite().SetId(20);
-	buttons[1].GetSprite().Initialize();
-
-	buttons[2].GetSprite().UpdateModelMatrix(glm::vec3(0.0f, -2.0f, 0.0f), 10.0f, glm::vec3(0.5f, 0.5f, 0.0f));
-	buttons[2].GetSprite().SetColorInactive(glm::vec4(0.0f, 0.0f, 0.5f, 1.0f));
-	buttons[2].GetSprite().SetColorActive(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	buttons[2].GetSprite().SetColorHot(glm::vec4(0.0f, 0.0f, 0.75f, 1.0f));
-	buttons[2].GetSprite().SetId(30);
-	buttons[2].GetSprite().Initialize();
-
+	scrollbar.Initialize();
 }
 
 void GUI::Update()
 {
 	if (hot)
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			if (buttons[i].GetSprite().GetId() == idHot)
 			{
 				buttons[i].IfHot();
 			}
 		}
+		if (scrollbar.buttons[0].GetSprite().GetId() == idHot)
+		{
+			scrollbar.buttons[0].IfHot();
+			
+		}
 	}
 	else
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 1; i++)
 			buttons[i].IfInactive();  //bad solution :(
+		scrollbar.buttons[0].IfInactive();
 	}
 	if (active)
 	{
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			if (buttons[i].GetSprite().GetId() == idActive)
 			{
 				buttons[i].IfActive();
 			}
 		}
+		if (scrollbar.buttons[0].GetSprite().GetId() == idActive)
+		{
+			int delta = mouseYLast - mouseY;
+			background = (-(scrollbar.sliderPosY - 2.5f) / 5.0f);
+			scrollbar.Scroll(delta * 0.00175f);		
+		}
 	}
-
-
 }
 
 void GUI::Draw()
