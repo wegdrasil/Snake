@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glm;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glew-1.10.0\include\GL;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2-2.0.3\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glew-1.10.0\lib\Release\Win32;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2_ttf-2.0.12\lib\x86;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\glew-1.10.0\lib\Release\Win32;C:\Users\Rafał\Desktop\PBWi\sem IV\Komunikacja człowiek-komputer\GUI\external\SDL2-2.0.3\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -85,23 +85,30 @@
     <ClCompile Include="..\..\external\stb_image\stb_image.c" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scrollbar.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Text.cpp" />
     <ClCompile Include="Widget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\external\stb_image\stb_image.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scrollbar.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Widget.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="TODO.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

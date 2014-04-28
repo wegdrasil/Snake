@@ -14,6 +14,8 @@
 #include <time.h>
 
 #include "GUI.h"
+#include "Font.h"
+#include "Text.h"
 
 class Renderer
 {
@@ -33,6 +35,8 @@ class Renderer
 	glm::mat4 MVP;
 
 	GUI* gui;
+	Font font;
+	Text text;
 
 public:
 		

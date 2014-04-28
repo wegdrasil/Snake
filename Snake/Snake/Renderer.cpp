@@ -2,7 +2,7 @@
 
 Renderer::Renderer()
 {
-	Projection = glm::perspective(45.0f, 800.0f/600.0f, 0.0f, 100.0f);
+	Projection = glm::mat4(1.0f); //glm::perspective(45.0f, 800.0f / 600.0f, 0.0f, 100.0f);
 	View = glm::mat4(1.0f);
 	Model = glm::mat4(1.0f);
 }
@@ -12,6 +12,10 @@ Renderer::~Renderer(){}
 void Renderer::Initialize(GUI* g)
 {
 	gui = g;
+
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
 	LoadImage();
 
 	std::vector<GLuint> shaderList;
@@ -34,12 +38,16 @@ void Renderer::Initialize(GUI* g)
 	glViewport(0, 0, 800, 600);
 	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
+	
+
+	font.ParseFontFile("test.fnt");
+	text.Initialize(&font, "batman");
 
 }
 
 void Renderer::Update()
 {
-	View = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	//View = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Renderer::Draw()
@@ -67,7 +75,13 @@ void Renderer::Draw()
 	glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[0].GetSprite().GetColor()));
 	gui->scrollbar.buttons[0].GetSprite().Draw();
 
-
+	for (int i = 0; i < text.size; i++)
+	{
+		MVP = Projection * View * text.GetSprite()[i].GetModelMatrix();
+		glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniform4fv(unfColor, 1, glm::value_ptr(text.GetSprite()[i].GetColor()));
+		text.GetSprite()[i].Draw();
+	}
 
 	glFlush();
 }
@@ -125,7 +139,7 @@ void Renderer::LoadImage()
 {
 	int x, y, n;
 	int force_channels = 4;
-	unsigned char* image_data = stbi_load("Textures\\placeholder.bmp", &x, &y, &n, force_channels);
+	unsigned char* image_data = stbi_load("Textures\\test2.png", &x, &y, &n, force_channels);
 	if (!image_data)
 		printf("ERROR: could not load image\n");
 
@@ -152,11 +166,12 @@ void Renderer::LoadImage()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
-
+	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
 }
 
 GLuint Renderer::CreateShaderFromTextFile(GLenum shadertype, char const* filename)

@@ -14,6 +14,8 @@ class Sprite
 	Vertex vertices[4];
 	unsigned short indices[6];
 	glm::vec4 color;
+
+//TODO:	it should not be here, move it to button class?
 	glm::vec4 colorHot;
 	glm::vec4 colorInactive;
 	glm::vec4 colorActive;
@@ -24,7 +26,9 @@ class Sprite
 
 	glm::mat4 ModelMatrix;
 
+//TODO:	it should not be here, move it to button class? Only buttons are clickable
 	int idUniform;
+
 	bool textured;
 
 public:
@@ -76,6 +80,13 @@ public:
 	int GetTextured()
 	{
 		return textured;
+	}
+	void SetTexCoords(glm::vec2 tcUpRight, glm::vec2 tcUpLeft, glm::vec2 tcDownRight, glm::vec2 tcDownLeft)
+	{
+		vertices[0].mTexCoord = tcUpRight;
+		vertices[1].mTexCoord = tcUpLeft;
+		vertices[2].mTexCoord = tcDownRight;
+		vertices[3].mTexCoord = tcDownLeft;
 	}
 };
 
