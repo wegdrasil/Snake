@@ -27,7 +27,7 @@ public:
 		return mSprites;
 	}
 	
-	void Initialize(Font* font, std::string s);
+	void Initialize(Font* font, std::string s, int posx, int posy);
 };
 
 #endif

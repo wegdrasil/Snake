@@ -1,5 +1,6 @@
+//------------------------------------------------------------------------------------------------------------------
 #include "Sprite.h"
-
+//------------------------------------------------------------------------------------------------------------------
 Sprite::Sprite()
 {
 	vertices[0] = Vertex(+0.5f, +0.5f, 0.0f, 1.0f, 1.0f);
@@ -15,12 +16,15 @@ Sprite::Sprite()
 	indices[5] = 2;
 
 	ModelMatrix = glm::mat4(1.0f);
-}
 
+	posXclip = 0;
+	posYclip = 0;
+}
+//------------------------------------------------------------------------------------------------------------------
 Sprite::~Sprite()
 {
 }
-
+//------------------------------------------------------------------------------------------------------------------
 void Sprite::Initialize()
 {
 	glGenVertexArrays(1, &VAO);
@@ -41,15 +45,40 @@ void Sprite::Initialize()
 
 	color = colorInactive;
 }
-
+//------------------------------------------------------------------------------------------------------------------
 void Sprite::UpdateModelMatrix(glm::vec3 t, float angle, glm::vec3 s)
 {
 	ModelMatrix = glm::scale(glm::rotate(glm::translate(ModelMatrix, t), angle, glm::vec3(0.0f, 0.0f, 1.0f)), s);
 }
+//------------------------------------------------------------------------------------------------------------------
+void Sprite::UpdateModelMatrixClip(glm::vec3 t, float angle, glm::vec3 s)
+{
+	glm::vec3 tClip = glm::vec3(((t.x+s.x/2) - 800) / 800.0f, ((-t.y-s.y/2) + 600) / 600.0f, 0.0f);
+	glm::vec3 sClip = glm::vec3(s.x / 800.0f, s.y / 600.0f, 0.0f);
 
+	ModelMatrix = glm::scale(glm::rotate(glm::translate(ModelMatrix, tClip), angle, glm::vec3(0.0f, 0.0f, 1.0f)), sClip);
+}
+//glm::vec3 tClip = glm::vec3((t.x - 789) / 800.0f, (t.y + 580) / 600.0f, 0.0f);
+
+//------------------------------------------------------------------------------------------------------------------
+void Sprite::SetTexCoords(float tcX, float tcY, float width, float height, float texturesize)
+{
+	float texsize = 512.0f;
+	float x = tcX / texsize;
+	float y = tcY / texsize;
+	float w = width / texsize;
+	float h = height / texsize;
+
+	vertices[0].mTexCoord = glm::vec2(x + w, y);
+	vertices[1].mTexCoord = glm::vec2(x, y);
+	vertices[2].mTexCoord = glm::vec2(x + w, y + h);
+	vertices[3].mTexCoord = glm::vec2(x, y + h);
+}
+//------------------------------------------------------------------------------------------------------------------
 void Sprite::Draw()
 {
 	glBindVertexArray(VAO);
 	
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, 0);
 }
+//------------------------------------------------------------------------------------------------------------------

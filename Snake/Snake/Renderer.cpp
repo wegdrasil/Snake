@@ -5,18 +5,34 @@ Renderer::Renderer()
 	Projection = glm::mat4(1.0f); //glm::perspective(45.0f, 800.0f / 600.0f, 0.0f, 100.0f);
 	View = glm::mat4(1.0f);
 	Model = glm::mat4(1.0f);
+
+	textImage.x = 0;
+	textImage.y = 0;
+	textImage.n = 0;
+	textImage.data = nullptr;
+
+
 }
 
 Renderer::~Renderer(){}
 
 void Renderer::Initialize(GUI* g)
 {
-	gui = g;
+	gui = g;	
 
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	
-	LoadImage();
+	LoadImage(&textImage, "Textures\\testta.png");
+
+	glGenTextures(1, &textTexture);
+	glBindTexture(GL_TEXTURE_2D, textTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textImage.x, textImage.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, textImage.data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	font.ParseFontFile("test.fnt");
+	text.Initialize(&font, "batman", 40, 20);
 
 	std::vector<GLuint> shaderList;
 	std::vector<GLuint> selectionShaderList;
@@ -36,12 +52,10 @@ void Renderer::Initialize(GUI* g)
 	unfCode   = glGetUniformLocation(selectionProgram, "uCode");
 	
 	glViewport(0, 0, 800, 600);
-	glActiveTexture(GL_TEXTURE0);
 	glEnable(GL_TEXTURE_2D);
-	
 
-	font.ParseFontFile("test.fnt");
-	text.Initialize(&font, "batman");
+	glActiveTexture(GL_TEXTURE0);
+
 
 }
 
@@ -135,23 +149,22 @@ void Renderer::Resize(int w, int h)
 	glViewport(0, 0, w, h);
 }
 
-void Renderer::LoadImage()
+void Renderer::LoadImage(Image* image, const char* filename)
 {
-	int x, y, n;
 	int force_channels = 4;
-	unsigned char* image_data = stbi_load("Textures\\test2.png", &x, &y, &n, force_channels);
-	if (!image_data)
+	image->data = stbi_load(filename, &image->x, &image->y, &image->n, force_channels);
+	if (!image->data)
 		printf("ERROR: could not load image\n");
 
-	int width_in_bytes = x * 4;
+	int width_in_bytes = image->x * 4;
 	unsigned char *top = NULL;
 	unsigned char *bottom = NULL;
 	unsigned char temp = 0;
-	int half_height = y / 2;
+	int half_height = image->y / 2;
 
 	for (int row = 0; row < half_height; row++) {
-		top = image_data + row * width_in_bytes;
-		bottom = image_data + (y - row - 1) * width_in_bytes;
+		top = image->data + row * width_in_bytes;
+		bottom = image->data + (image->y - row - 1) * width_in_bytes;
 		for (int col = 0; col < width_in_bytes; col++) {
 			temp = *top;
 			*top = *bottom;
@@ -161,17 +174,7 @@ void Renderer::LoadImage()
 		}
 	}
 
-	GLuint tex;
-	glGenTextures(1, &tex);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, tex);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
 	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
 }
 
 GLuint Renderer::CreateShaderFromTextFile(GLenum shadertype, char const* filename)

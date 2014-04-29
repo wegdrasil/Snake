@@ -17,6 +17,12 @@
 #include "Font.h"
 #include "Text.h"
 
+struct Image
+{
+	int x, y, n;
+	unsigned char* data;
+};
+
 class Renderer
 {
 	GLuint shaderProgram;
@@ -38,6 +44,13 @@ class Renderer
 	Font font;
 	Text text;
 
+	Image guiImage;
+	Image textImage;
+
+	GLuint guiTexture;
+	GLuint textTexture;
+
+
 public:
 		
 	Renderer();
@@ -50,7 +63,7 @@ public:
 	unsigned char ProcessSelection(int x, int y);
 	void Resize(int w, int h);
 	
-	void LoadImage();
+	void LoadImage(Image* image, const char* filename);
 	GLuint Renderer::CreateShaderFromTextFile(GLenum shadertype, char const* filename);
 	GLuint Renderer::CreateProgram(std::vector<unsigned> const& shaderList);
 };
