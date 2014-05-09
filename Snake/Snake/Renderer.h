@@ -14,7 +14,6 @@
 #include <time.h>
 
 #include "GUI.h"
-#include "Font.h"
 #include "Text.h"
 
 struct Image
@@ -41,8 +40,7 @@ class Renderer
 	glm::mat4 MVP;
 
 	GUI* gui;
-	Font font;
-	Text text;
+	Text* text;
 
 	Image guiImage;
 	Image textImage;
@@ -56,7 +54,7 @@ public:
 	Renderer();
 	~Renderer();
 	
-	void Initialize(GUI* gui);
+	void Initialize(GUI* gui, Text* t);
 	void Update();
 	void Draw();
 	void DrawSelection();

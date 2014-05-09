@@ -9,6 +9,11 @@ GUI::GUI()
 	mouseYLast = 0;
 	mousedown = false;
 
+	kbditem = 0;
+	keyentered = 0;
+	keymod = 0;
+	keychar = 0;
+
 	hot = false;
 	active = false;
 }
@@ -21,10 +26,10 @@ void GUI::Initialize()
 {
 	Sprite* ptr = &buttons[0].GetSprite();
 	//ptr->UpdateModelMatrix(glm::vec3(-1.0f, 1.0f, 0.0f), 0.0f, glm::vec3(0.5f, 0.5f, 0.0f));
-	ptr->UpdateModelMatrixClip(glm::vec3(45.0f, 40.0f, 0.0f), 0.0f, glm::vec3(128.0f, 64, 0.0f));
+	ptr->UpdateModelMatrixClip(glm::vec3(45.0f, 40.0f, 0.0f), 0.0f, glm::vec3(364.0f, 74, 0.0f));
 
 
-	ptr->SetTexCoords(0, 461, 16, 16, 512.0f);
+	ptr->SetTexCoords(16, 438, 364, 74, 512.0f);
 
 	//ptr->(glm::vec2(x + w, y), glm::vec2(x, y), glm::vec2(x + w, y + h), glm::vec2(x, y + h));
 	ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));

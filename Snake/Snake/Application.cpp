@@ -1,4 +1,6 @@
 #include "Application.h"
+#include <stdio.h>
+#include <string.h>
 
 App::App() {}
 App::~App(){}
@@ -7,18 +9,28 @@ void App::Initialize()
 {
 	SDL_Init(SDL_INIT_VIDEO);
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
 	window = SDL_CreateWindow("Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
-
+	
 	SDL_GL_CreateContext(window);
+	glewExperimental = GL_TRUE;
 
 	glewInit();
-
+	
+	printf("%s\n", glGetString(GL_VERSION));
+	//if (!strstr(glGetString(GL_EXTENSIONS), "GL_ARB_vertex_buffer_object"))
+	//	;
+		
 	gui.Initialize();
-	renderer.Initialize(&gui);
+	font.ParseFontFile("test.fnt");
+	inputText = "batman";
+	text.SetText(&font, inputText, 38, 27);
+	renderer.Initialize(&gui, &text);
+
+
 }
 
 void App::Run()
@@ -50,6 +62,24 @@ void App::Run()
 					break;
 				case SDLK_d:
 					break;
+				}
+				if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)
+				{
+					inputText.pop_back();
+					text.SetText(&font, inputText, 38, 27);
+				}
+				if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
+				{
+					inputText += SDL_GetClipboardText();
+					text.SetText(&font, inputText, 38, 27);
+				}
+			}
+			else if (e.type == SDL_TEXTINPUT)
+			{
+				if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
+				{
+					inputText += e.text.text;
+					text.SetText(&font, inputText, 38, 27);
 				}
 			}
 			else if (e.type == SDL_MOUSEMOTION)

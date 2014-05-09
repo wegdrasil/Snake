@@ -16,9 +16,10 @@ Renderer::Renderer()
 
 Renderer::~Renderer(){}
 
-void Renderer::Initialize(GUI* g)
+void Renderer::Initialize(GUI* g, Text* t)
 {
 	gui = g;	
+	text = t;
 
 	LoadImage(&textImage, "Textures\\testta.png");
 
@@ -31,8 +32,7 @@ void Renderer::Initialize(GUI* g)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-	font.ParseFontFile("test.fnt");
-	text.Initialize(&font, "batman", 40, 20);
+
 
 	std::vector<GLuint> shaderList;
 	std::vector<GLuint> selectionShaderList;
@@ -89,12 +89,12 @@ void Renderer::Draw()
 	glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[0].GetSprite().GetColor()));
 	gui->scrollbar.buttons[0].GetSprite().Draw();
 
-	for (int i = 0; i < text.size; i++)
+	for (int i = 0; i < text->size; i++)
 	{
-		MVP = Projection * View * text.GetSprite()[i].GetModelMatrix();
+		MVP = Projection * View * text->GetSprite()[i].GetModelMatrix();
 		glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniform4fv(unfColor, 1, glm::value_ptr(text.GetSprite()[i].GetColor()));
-		text.GetSprite()[i].Draw();
+		glUniform4fv(unfColor, 1, glm::value_ptr(text->GetSprite()[i].GetColor()));
+		text->GetSprite()[i].Draw();
 	}
 
 	glFlush();

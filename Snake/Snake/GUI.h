@@ -3,6 +3,7 @@
 
 #include "Button.h"
 #include "Scrollbar.h"
+#include "Checkbox.h"
 
 class GUI
 {
@@ -19,9 +20,16 @@ public:
 
 	unsigned char idHot;
 	unsigned char idActive;
+
+	int kbditem;
+	int keyentered;
+	int keymod;
+	int keychar;
 	
 	Button buttons[1];
 	Scrollbar scrollbar;
+
+
 
 	float background;
 
