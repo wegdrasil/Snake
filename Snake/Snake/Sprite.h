@@ -28,7 +28,7 @@ class Sprite
 	GLuint IBO;
 
 	glm::mat4 ModelMatrix;
-
+	
 //TODO:	it should not be here, move it to button class? Only buttons are clickable
 	int idUniform;
 
@@ -37,7 +37,7 @@ class Sprite
 public:
 	Sprite();
 	~Sprite();
-
+	glm::vec4 AtlasTexcoords;
 	void Initialize();
 	void Draw();
 
@@ -46,7 +46,7 @@ public:
 	void UpdateModelMatrixClip(glm::vec3 t,float angle, glm::vec3 s);
 
 	void SetTexCoords(float tcX, float tcY, float width, float height, float texturesize);
-
+	glm::vec4& GetAtlasTexcoords() { return AtlasTexcoords; }
 
 	void SetPositionClip(int x, int y)	{ posXclip = x; posYclip = y; };
 

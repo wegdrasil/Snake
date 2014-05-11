@@ -30,6 +30,7 @@ class Renderer
 	GLuint unfMat;
 	GLuint unfColor;
 	GLuint unfTexture;
+	GLuint unfAtlasTexcoords;
 
 	GLuint unfMatSel;
 	GLuint unfCode;

@@ -21,11 +21,13 @@ void App::Initialize()
 	glewInit();
 	
 	printf("%s\n", glGetString(GL_VERSION));
+	int tmp;
+	glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &tmp);
+	printf("%d\n", tmp/4);
 	//if (!strstr(glGetString(GL_EXTENSIONS), "GL_ARB_vertex_buffer_object"))
 	//	;
-		
-	gui.Initialize();
-	font.ParseFontFile("test.fnt");
+	font.ParseFontFile("test.fnt");		
+	gui.Initialize(&font);
 	inputText = "batman";
 	text.SetText(&font, inputText, 38, 27);
 	renderer.Initialize(&gui, &text);
@@ -52,7 +54,7 @@ void App::Run()
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_p:
-					std::cout << gui.mouseX << " " << gui.mouseY << "\n";
+					std::cout << gui.state.mouseX << " " << gui.state.mouseY << "\n";
 					break;
 				case SDLK_w:
 					break;
@@ -84,53 +86,60 @@ void App::Run()
 			}
 			else if (e.type == SDL_MOUSEMOTION)
 			{
-				gui.mouseXLast = gui.mouseX;
-				gui.mouseYLast = gui.mouseY;
+				gui.state.mouseXLast = gui.state.mouseX;
+				gui.state.mouseYLast = gui.state.mouseY;
 
-				gui.mouseX = e.motion.x;
-				gui.mouseY = e.motion.y;
+				gui.state.mouseX = e.motion.x;
+				gui.state.mouseY = e.motion.y;
 				
-				unsigned char id = renderer.ProcessSelection(gui.mouseX, gui.mouseY);
+				
+
+				unsigned char id = renderer.ProcessSelection(gui.state.mouseX, gui.state.mouseY);
 
 				if (id == 0)
 				{
-					gui.idHot = 0;
-					gui.hot = false;
+					gui.state.idHot = 0;
+					gui.state.hot = false;
 				}
 				else
 				{	
-					if (gui.idHot != id)
-						gui.hot = false;
+					if (gui.state.idHot != id)
+						gui.state.hot = false;
 
-					gui.idHot = id;
-					gui.hot = true;
+					gui.state.idHot = id;
+					gui.state.hot = true;
 				}
 			}
 			else if (e.type == SDL_MOUSEBUTTONDOWN)
 			{
 				if (e.button.button == true)
-					gui.mousedown = true;
+					gui.state.mousedown = true;
+				
+				if (e.button.state == SDL_PRESSED)
+					gui.state.mousepressed = true;
 
-				unsigned char id = renderer.ProcessSelection(gui.mouseX, gui.mouseY);
+				unsigned char id = renderer.ProcessSelection(gui.state.mouseX, gui.state.mouseY);
 				
 				if ( id == 0)
 				{
-					gui.active = false;
+					gui.state.active = false;
 				}
 				else
 				{
-					gui.idActive = id;
-					gui.active   = true;
+					gui.state.idActive = id;
+					gui.state.active = true;
 				}
 			
 			}
 			else if (e.type == SDL_MOUSEBUTTONUP)
-			{
+			{gui.state.mousepressed = false;
 				if (e.button.button == true)
-					gui.mousedown = false;
+					gui.state.mousedown = false;
 
-				gui.idActive = 0;
-				gui.active = false;
+				gui.state.idActive = 0;
+				gui.state.active = false;
+
+
 
 			}
 			else if (e.type == SDL_WINDOWEVENT)

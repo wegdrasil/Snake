@@ -10,8 +10,6 @@ Renderer::Renderer()
 	textImage.y = 0;
 	textImage.n = 0;
 	textImage.data = nullptr;
-
-
 }
 
 Renderer::~Renderer(){}
@@ -40,9 +38,12 @@ void Renderer::Initialize(GUI* g, Text* t)
 	shaderList.push_back(CreateShaderFromTextFile(GL_VERTEX_SHADER, "Shaders\\VS.glsl"));
 	shaderList.push_back(CreateShaderFromTextFile(GL_FRAGMENT_SHADER, "Shaders\\FS.glsl"));
 	shaderProgram = CreateProgram(shaderList);
+
 	unfMat = glGetUniformLocation(shaderProgram, "uMat");
 	unfColor = glGetUniformLocation(shaderProgram, "uColor");
+	unfAtlasTexcoords = glGetUniformLocation(shaderProgram, "uAtlasTexcoords");
 	unfTexture = glGetUniformLocation(shaderProgram, "uTexture");
+	
 	glUniform1i(unfTexture, 0);
 
 	selectionShaderList.push_back(CreateShaderFromTextFile(GL_VERTEX_SHADER, "Shaders\\VS.glsl"));
@@ -71,32 +72,44 @@ void Renderer::Draw()
 
 	glUseProgram(shaderProgram);
 
-	for (int i = 0; i < 3; i++)
-	{
-		MVP = Projection * View * gui->buttons[i].GetSprite().GetModelMatrix();
-		glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniform4fv(unfColor, 1, glm::value_ptr(gui->buttons[i].GetSprite().GetColor()));
-		gui->buttons[i].GetSprite().Draw();
-	}
-
-	MVP = Projection * View * gui->scrollbar.buttons[1].GetSprite().GetModelMatrix();
-	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[1].GetSprite().GetColor()));
-	gui->scrollbar.buttons[1].GetSprite().Draw();
+	//for (int i = 0; i < 3; i++)
+	//{
 	
-	MVP = Projection * View * gui->scrollbar.buttons[0].GetSprite().GetModelMatrix();
-	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[0].GetSprite().GetColor()));
-	gui->scrollbar.buttons[0].GetSprite().Draw();
 
-	for (int i = 0; i < text->size; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		MVP = Projection * View * text->GetSprite()[i].GetModelMatrix();
+		Sprite* sprite = &gui->checkbox[i].GetButtonSprite();
+		MVP = Projection * View * sprite->GetModelMatrix();
 		glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniform4fv(unfColor, 1, glm::value_ptr(text->GetSprite()[i].GetColor()));
-		text->GetSprite()[i].Draw();
+		glUniform4fv(unfColor, 1, glm::value_ptr(sprite->GetColor()));
+		glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(sprite->GetAtlasTexcoords()));
+		sprite->Draw();
 	}
+//}
 
+	//MVP = Projection * View * gui->scrollbar.buttons[1].GetSprite().GetModelMatrix();
+	//glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+	//glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[1].GetSprite().GetColor()));
+	//gui->scrollbar.buttons[1].GetSprite().Draw();
+	//
+	//MVP = Projection * View * gui->scrollbar.buttons[0].GetSprite().GetModelMatrix();
+	//glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+	//glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[0].GetSprite().GetColor()));
+	////glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(gui->scrollbar.buttons[0].GetSprite().GetAtlasTexcoords()));
+	//gui->scrollbar.buttons[0].GetSprite().Draw();
+
+	for (int i = 0; i < 4; i++)
+	{
+		Text* text = &gui->checkbox[i].GetText();
+		for (int i = 0; i < text->size; i++)
+		{
+			MVP = Projection * View * text->GetSprite()[i].GetModelMatrix();
+			glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+			glUniform4fv(unfColor, 1, glm::value_ptr(text->GetSprite()[i].GetColor()));
+			glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(text->GetSprite()[i].GetAtlasTexcoords()));
+			text->GetSprite()[i].Draw();
+		}
+	}
 	glFlush();
 }
 
@@ -107,23 +120,37 @@ void Renderer::DrawSelection()
 
 	glUseProgram(selectionProgram);
 	
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		MVP = Projection * View * gui->buttons[i].GetSprite().GetModelMatrix();
+		Sprite* sprite = &gui->checkbox[i].GetButtonSprite();
+		MVP = Projection * View * sprite->GetModelMatrix();
 		glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniform1i(unfCode, gui->buttons[i].GetSprite().GetId());
-		gui->buttons[i].GetSprite().Draw();
+		glUniform1i(unfCode, sprite->GetId());
+		sprite->Draw();
 	}
+	/*Sprite* sprite = &gui->checkbox.GetButtonSprite();
+	MVP = Projection * View * sprite->GetModelMatrix();
+	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniform1i(unfCode, sprite->GetId());
+	sprite->Draw();*/
 
-	MVP = Projection * View * gui->scrollbar.buttons[1].GetSprite().GetModelMatrix();
-	glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniform1i(unfCode, gui->scrollbar.buttons[1].GetSprite().GetId());
-	gui->scrollbar.buttons[1].GetSprite().Draw();
-	
-	MVP = Projection * View * gui->scrollbar.buttons[0].GetSprite().GetModelMatrix();
-	glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniform1i(unfCode, gui->scrollbar.buttons[0].GetSprite().GetId());
-	gui->scrollbar.buttons[0].GetSprite().Draw();
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	MVP = Projection * View * gui->buttons[i].GetSprite().GetModelMatrix();
+	//	glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
+	//	glUniform1i(unfCode, gui->buttons[i].GetSprite().GetId());
+	//	gui->buttons[i].GetSprite().Draw();
+	//}
+
+	//MVP = Projection * View * gui->scrollbar.buttons[1].GetSprite().GetModelMatrix();
+	//glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
+	//glUniform1i(unfCode, gui->scrollbar.buttons[1].GetSprite().GetId());
+	//gui->scrollbar.buttons[1].GetSprite().Draw();
+	//
+	//MVP = Projection * View * gui->scrollbar.buttons[0].GetSprite().GetModelMatrix();
+	//glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
+	//glUniform1i(unfCode, gui->scrollbar.buttons[0].GetSprite().GetId());
+	//gui->scrollbar.buttons[0].GetSprite().Draw();
 	
 	glFlush();
 }

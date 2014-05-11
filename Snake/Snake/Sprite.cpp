@@ -15,7 +15,7 @@ Sprite::Sprite()
 	indices[4] = 3;
 	indices[5] = 2;
 
-	ModelMatrix = glm::mat4(1.0f);
+	//ModelMatrix = glm::mat4(3.0f);
 
 	posXclip = 0;
 	posYclip = 0;
@@ -44,6 +44,8 @@ void Sprite::Initialize()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	color = colorInactive;
+	//AtlasTexcoords = glm::vec4(1.0f);
+	
 }
 //------------------------------------------------------------------------------------------------------------------
 void Sprite::UpdateModelMatrix(glm::vec3 t, float angle, glm::vec3 s)
@@ -68,11 +70,13 @@ void Sprite::SetTexCoords(float tcX, float tcY, float width, float height, float
 	float y = tcY / texsize;
 	float w = width / texsize;
 	float h = height / texsize;
-
-	vertices[0].mTexCoord = glm::vec2(x + w, y);
-	vertices[1].mTexCoord = glm::vec2(x, y);
-	vertices[2].mTexCoord = glm::vec2(x + w, y + h);
-	vertices[3].mTexCoord = glm::vec2(x, y + h);
+	
+	AtlasTexcoords = glm::vec4(x, y, w, h);
+	
+	//vertices[0].mTexCoord = glm::vec2(x + w, y);
+	//vertices[1].mTexCoord = glm::vec2(x, y);
+	//vertices[2].mTexCoord = glm::vec2(x + w, y + h);
+	//vertices[3].mTexCoord = glm::vec2(x, y + h);
 }
 //------------------------------------------------------------------------------------------------------------------
 void Sprite::Draw()

@@ -4,39 +4,25 @@
 #include "Button.h"
 #include "Scrollbar.h"
 #include "Checkbox.h"
+#include "Font.h"
+#include "GUIState.h"
 
 class GUI
 {
 public:
-	int mouseX;
-	int mouseY;
-	int mouseXLast;
-	int mouseYLast;
+	GUIState state;
 
-	bool mousedown;
-
-	bool hot;
-	bool active;
-
-	unsigned char idHot;
-	unsigned char idActive;
-
-	int kbditem;
-	int keyentered;
-	int keymod;
-	int keychar;
-	
 	Button buttons[1];
 	Scrollbar scrollbar;
-
-
+	Checkbox checkbox[4];
+	Font* font;
 
 	float background;
 
 	GUI();
 	~GUI();
 
-	void Initialize();
+	void Initialize(Font* f);
 	void Update();
 	void Draw();
 };

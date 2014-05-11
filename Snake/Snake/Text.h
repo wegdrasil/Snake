@@ -54,7 +54,7 @@ public:
 				float texsize = 512.0f;
 
 				mSprites[i].SetTexCoords(data.x, data.y, data.width, data.height, texsize);
-				mSprites[i].UpdateModelMatrixClip(glm::vec3(posx * 2 + offset, posy * 2 + 0.0f, 0.0f), 0.0f, glm::vec3(data.width, data.height, 0.0f));
+				mSprites[i].UpdateModelMatrixClip(glm::vec3(posx  + offset, posy  + 0.0f, 0.0f), 0.0f, glm::vec3(data.width, data.height, 0.0f));
 
 				mSprites[i].SetColorInactive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 				mSprites[i].SetColorActive(glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
