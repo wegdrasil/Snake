@@ -17,22 +17,13 @@ void App::Initialize()
 	
 	SDL_GL_CreateContext(window);
 	glewExperimental = GL_TRUE;
-
+	
 	glewInit();
 	
-	printf("%s\n", glGetString(GL_VERSION));
-	int tmp;
-	glGetIntegerv(GL_MAX_VERTEX_UNIFORM_COMPONENTS, &tmp);
-	printf("%d\n", tmp/4);
-	//if (!strstr(glGetString(GL_EXTENSIONS), "GL_ARB_vertex_buffer_object"))
-	//	;
 	font.ParseFontFile("test.fnt");		
 	gui.Initialize(&font);
-	inputText = "batman";
-	text.SetText(&font, inputText, 38, 27);
-	renderer.Initialize(&gui, &text);
-
-
+	inputText = "";
+	renderer.Initialize(&gui);
 }
 
 void App::Run()
@@ -67,21 +58,31 @@ void App::Run()
 				}
 				if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)
 				{
-					inputText.pop_back();
-					text.SetText(&font, inputText, 38, 27);
+					if (gui.state.activeTextbox )
+					{
+						inputText.pop_back();
+						gui.ReceiveText(inputText);
+					}
 				}
-				if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
+				/*if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
 				{
-					inputText += SDL_GetClipboardText();
-					text.SetText(&font, inputText, 38, 27);
-				}
+					if (gui.state.activeTextbox)
+					{
+						inputText += SDL_GetClipboardText();
+						if( inputText.size() < 15)
+							gui.ReceiveText(inputText);
+					}
+				}*/
 			}
 			else if (e.type == SDL_TEXTINPUT)
 			{
 				if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
 				{
-					inputText += e.text.text;
-					text.SetText(&font, inputText, 38, 27);
+					if (gui.state.activeTextbox && inputText.size() < 15)
+					{
+						inputText += e.text.text;
+						gui.ReceiveText(inputText);
+					}
 				}
 			}
 			else if (e.type == SDL_MOUSEMOTION)
@@ -92,8 +93,6 @@ void App::Run()
 				gui.state.mouseX = e.motion.x;
 				gui.state.mouseY = e.motion.y;
 				
-				
-
 				unsigned char id = renderer.ProcessSelection(gui.state.mouseX, gui.state.mouseY);
 
 				if (id == 0)
@@ -123,21 +122,25 @@ void App::Run()
 				if ( id == 0)
 				{
 					gui.state.active = false;
+					gui.state.idIsZero = true;
 				}
 				else
 				{
 					gui.state.idActive = id;
 					gui.state.active = true;
+					gui.state.idIsZero = false;
 				}
 			
 			}
 			else if (e.type == SDL_MOUSEBUTTONUP)
-			{gui.state.mousepressed = false;
+			{
+				gui.state.mousepressed = false;
 				if (e.button.button == true)
 					gui.state.mousedown = false;
 
 				gui.state.idActive = 0;
 				gui.state.active = false;
+				gui.state.idIsZero = false;
 
 
 

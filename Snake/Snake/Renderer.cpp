@@ -14,10 +14,9 @@ Renderer::Renderer()
 
 Renderer::~Renderer(){}
 
-void Renderer::Initialize(GUI* g, Text* t)
+void Renderer::Initialize(GUI* g)
 {
-	gui = g;	
-	text = t;
+	gui = g;
 
 	LoadImage(&textImage, "Textures\\testta.png");
 
@@ -29,7 +28,6 @@ void Renderer::Initialize(GUI* g, Text* t)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
 
 
 	std::vector<GLuint> shaderList;
@@ -85,6 +83,16 @@ void Renderer::Draw()
 		glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(sprite->GetAtlasTexcoords()));
 		sprite->Draw();
 	}
+
+	for (int i = 0; i < 1; i++)
+	{
+		Sprite* sprite = &gui->textbox[i].GetButtonSprite();
+		MVP = Projection * View * sprite->GetModelMatrix();
+		glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniform4fv(unfColor, 1, glm::value_ptr(sprite->GetColor()));
+		glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(sprite->GetAtlasTexcoords()));
+		sprite->Draw();
+	}
 //}
 
 	//MVP = Projection * View * gui->scrollbar.buttons[1].GetSprite().GetModelMatrix();
@@ -110,6 +118,19 @@ void Renderer::Draw()
 			text->GetSprite()[i].Draw();
 		}
 	}
+
+	for (int i = 0; i < 1; i++)
+	{
+		Text* text = &gui->textbox[i].GetText();
+		for (int i = 0; i < text->size; i++)
+		{
+			MVP = Projection * View * text->GetSprite()[i].GetModelMatrix();
+			glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+			glUniform4fv(unfColor, 1, glm::value_ptr(text->GetSprite()[i].GetColor()));
+			glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(text->GetSprite()[i].GetAtlasTexcoords()));
+			text->GetSprite()[i].Draw();
+		}
+	}
 	glFlush();
 }
 
@@ -123,6 +144,15 @@ void Renderer::DrawSelection()
 	for (int i = 0; i < 4; i++)
 	{
 		Sprite* sprite = &gui->checkbox[i].GetButtonSprite();
+		MVP = Projection * View * sprite->GetModelMatrix();
+		glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
+		glUniform1i(unfCode, sprite->GetId());
+		sprite->Draw();
+	}
+
+	for (int i = 0; i < 1; i++)
+	{
+		Sprite* sprite = &gui->textbox[i].GetButtonSprite();
 		MVP = Projection * View * sprite->GetModelMatrix();
 		glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
 		glUniform1i(unfCode, sprite->GetId());

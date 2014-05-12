@@ -17,10 +17,15 @@ struct GUIState
 	unsigned char idHot;
 	unsigned char idActive;
 
+	bool idIsZero;
+
 	int kbditem;
 	int keyentered;
 	int keymod;
 	int keychar;
+
+	std::string text;
+	bool activeTextbox;
 
 };
 #endif

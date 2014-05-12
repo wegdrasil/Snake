@@ -41,7 +41,6 @@ class Renderer
 	glm::mat4 MVP;
 
 	GUI* gui;
-	Text* text;
 
 	Image guiImage;
 	Image textImage;
@@ -55,7 +54,7 @@ public:
 	Renderer();
 	~Renderer();
 	
-	void Initialize(GUI* gui, Text* t);
+	void Initialize(GUI* gui);
 	void Update();
 	void Draw();
 	void DrawSelection();

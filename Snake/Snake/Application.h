@@ -18,7 +18,6 @@ class App
 	Renderer renderer;
 	GUI gui;
 	Font font;
-	Text text;
 	
 	std::string inputText;
 
