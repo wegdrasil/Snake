@@ -61,7 +61,10 @@ public:
 	void DrawSelection();
 	unsigned char ProcessSelection(int x, int y);
 	void Resize(int w, int h);
-	
+
+	void DrawSprite(Sprite* sprite);
+	void DrawSpriteSelection(Sprite* sprite);
+
 	void LoadImage(Image* image, const char* filename);
 	GLuint Renderer::CreateShaderFromTextFile(GLenum shadertype, char const* filename);
 	GLuint Renderer::CreateProgram(std::vector<unsigned> const& shaderList);

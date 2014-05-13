@@ -1,31 +1,30 @@
-#ifndef SSTARTGAMEH
-#define SSTARTGAMEH
+#ifndef SOPTIONSH
+#define SOPTIONSH
 
 #include "Renderer.h"
 #include "GUI.h"
 #include "Text.h"
+#include "Checkbox.h"
+#include "Button.h"
 #include "Font.h"
 
-#include "Options.h"
-
-class StartGame
+class Options
 {
 	SDL_Window *window;
 	Renderer* renderer;
 	GUI gui;
 	Font* font;
 
-	Text text[5];
-	Button button[4];
+	Checkbox checkbox[4];
+	Text text[3];
 
-	Options options;
+	Button button;
 
 	unsigned int choosen;
-	int difflevel;
 
 public:
-	StartGame();
-	~StartGame();
+	Options();
+	~Options();
 
 	void Initialize(SDL_Window *w, Renderer* r, Font* f)
 	{
@@ -33,14 +32,17 @@ public:
 		renderer = r;
 		font = f;
 
-		text[0].SetText(font, "SNAKE", 700.0f, 300.0f);
-		text[1].SetText(font, "New Game", 700.0f, 400.0f);
-		text[2].SetText(font, "Hall of Fame", 700.0f, 450.0f);
-		text[3].SetText(font, "Options", 700.0f, 500.0f);
-		text[4].SetText(font, "Quit", 700.0f, 550.0f);
+		text[0].SetText(font, "Options", 730.0f, 350.0f);
+		text[1].SetText(font, "Choose level of difficulty", 550.0f, 400.0f);
+		text[2].SetText(font, "return to the menu", 650.0f, 700.0f);
 
-		Sprite* ptr = &button[0].GetSprite();
-		ptr->UpdateModelMatrixClip(glm::vec3(650.0f, 400.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
+		checkbox[0].Init(600.0f, 450.0f, font, "very easy (default)", 200);
+		checkbox[1].Init(600.0f, 500.0f, font, "easy ", 201);
+		checkbox[2].Init(600.0f, 550.0f, font, "medium", 202);
+		checkbox[3].Init(600.0f, 600.0f, font, "hard", 203);
+
+		Sprite* ptr = &button.GetSprite();
+		ptr->UpdateModelMatrixClip(glm::vec3(600.0f, 700.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
 		ptr->SetTexCoords(0, 424, 13, 13, 512.0f);
 		ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
 		ptr->SetColorActive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -48,42 +50,15 @@ public:
 		ptr->SetId(100);
 		ptr->Initialize();
 
-		ptr = &button[1].GetSprite();
-		ptr->UpdateModelMatrixClip(glm::vec3(650.0f, 450.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
-		ptr->SetTexCoords(0, 424, 13, 13, 512.0f);
-		ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		ptr->SetColorActive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		ptr->SetColorHot(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
-		ptr->SetId(101);
-		ptr->Initialize();
-
-		ptr = &button[2].GetSprite();
-		ptr->UpdateModelMatrixClip(glm::vec3(650.0f, 500.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
-		ptr->SetTexCoords(0, 424, 13, 13, 512.0f);
-		ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		ptr->SetColorActive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		ptr->SetColorHot(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
-		ptr->SetId(102);
-		ptr->Initialize();
-
-		ptr = &button[3].GetSprite();
-		ptr->UpdateModelMatrixClip(glm::vec3(650.0f, 550.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
-		ptr->SetTexCoords(0, 424, 13, 13, 512.0f);
-		ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		ptr->SetColorActive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		ptr->SetColorHot(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
-		ptr->SetId(103);
-		ptr->Initialize();
-
 		choosen = 0;
-		difflevel = 0;
-		options.Initialize(window, renderer, font);
 	}
 
 	void GuiUpdate()
 	{
 		for (int i = 0; i < 4; i++)
-			button[i].Logic(&gui.state);
+			checkbox[i].Logic(&gui.state);
+
+		button.Logic(&gui.state);
 	}
 
 	void Draw()
@@ -92,14 +67,25 @@ public:
 		glClearBufferfv(GL_COLOR, 0, lightskycolor);
 
 		glUseProgram(renderer->shaderProgram);
+
+		renderer->DrawSprite(&button.GetSprite());
+
+		for (int i = 0; i < 4; i++)
+			renderer->DrawSprite(&checkbox[i].GetButtonSprite());
 		
-		for (int j = 0; j < 5; j++)
+		for (int j = 0; j < 4; j++)
+		{
+			Text* ptr = &checkbox[j].GetText();
+			for (int i = 0; i < ptr->size; i++)
+			{
+				renderer->DrawSprite(&ptr->GetSprite()[i]);
+			}
+		}
+
+		for (int j = 0; j < 3; j++)
 			for (int i = 0; i < text[j].size; i++)
 				renderer->DrawSprite(&text[j].GetSprite()[i]);
 
-		for (int i = 0; i < 4; i++)
-			renderer->DrawSprite(&button[i].GetSprite());
-		
 		glFlush();
 	}
 
@@ -109,9 +95,11 @@ public:
 		glClearBufferfv(GL_COLOR, 0, blackcolor);
 
 		glUseProgram(renderer->selectionProgram);
+		
+		renderer->DrawSpriteSelection(&button.GetSprite());
 
 		for (int i = 0; i < 4; i++)
-			renderer->DrawSpriteSelection(&button[i].GetSprite());
+			renderer->DrawSpriteSelection(&checkbox[i].GetButtonSprite());
 		
 		glFlush();
 	}
@@ -129,11 +117,11 @@ public:
 
 		return response[0];
 	}
-	void Run()
+	int Run()
 	{
 		bool quit = false;
 		SDL_Event e;
-		
+
 		while (!quit)
 		{
 			while (SDL_PollEvent(&e) != 0)
@@ -146,22 +134,22 @@ public:
 				{
 					gui.state.mouseXLast = gui.state.mouseX;
 					gui.state.mouseYLast = gui.state.mouseY;
-		
+
 					gui.state.mouseX = e.motion.x;
 					gui.state.mouseY = e.motion.y;
-						
+
 					unsigned char id = ProcessSelection(gui.state.mouseX, gui.state.mouseY);
-		
+
 					if (id == 0)
 					{
 						gui.state.idHot = 0;
 						gui.state.hot = false;
 					}
 					else
-					{	
+					{
 						if (gui.state.idHot != id)
 							gui.state.hot = false;
-		
+
 						gui.state.idHot = id;
 						gui.state.hot = true;
 					}
@@ -170,15 +158,15 @@ public:
 				{
 					if (e.button.button == true)
 						gui.state.mousedown = true;
-						
+
 					if (e.button.state == SDL_PRESSED)
 						gui.state.mousepressed = true;
-		
+
 					unsigned char id = ProcessSelection(gui.state.mouseX, gui.state.mouseY);
-					
+
 					choosen = id;
 
-					if ( id == 0)
+					if (id == 0)
 					{
 						gui.state.active = false;
 						gui.state.idIsZero = true;
@@ -189,60 +177,51 @@ public:
 						gui.state.active = true;
 						gui.state.idIsZero = false;
 					}
-					
+
 				}
 				else if (e.type == SDL_MOUSEBUTTONUP)
 				{
 					gui.state.mousepressed = false;
 					if (e.button.button == true)
 						gui.state.mousedown = false;
-		
+
 					gui.state.idActive = 0;
 					gui.state.active = false;
 					gui.state.idIsZero = false;
-		
+
 				}
 				else if (e.type == SDL_WINDOWEVENT)
 				{
 					switch (e.window.event)
 					{
-						case SDL_WINDOWEVENT_RESIZED:
-							renderer->Resize(e.window.data1, e.window.data2);
-							break;
+					case SDL_WINDOWEVENT_RESIZED:
+						renderer->Resize(e.window.data1, e.window.data2);
+						break;
 					}
 				}
-			}
-				
-			GuiUpdate();
 
-			switch (choosen)
-			{
-			case 0:
-				//printf("Nothing Picked \n");
-				break;
-			case 100:
-				printf("New Game\n");
-				break;
-			case 101:
-				printf("Hall of Fame\n");
-				break;
-			case 102:
-				difflevel = options.Run();
-				printf("%d\n", difflevel);
-				choosen = 0;
-				break;
-			case 103:
-				printf("Quit\n");
-				quit = true;
-				break;
-			default:
-				printf("Res: %d\n", choosen);
-			}
+				GuiUpdate();
 
-			Draw();
-		
-			SDL_GL_SwapWindow(window);
+				switch (choosen)
+				{
+				case 100:
+					printf("Quit\n");
+					quit = true;
+					choosen = 0;
+					break;
+				default:
+					printf("Res: %d\n", choosen);
+				}
+
+				Draw();
+
+				SDL_GL_SwapWindow(window);
+			}
 		}
+
+		for (int i = 0; i < 4; i++)
+			if (checkbox[i].on)
+				return i;
 	}
 };
 #endif

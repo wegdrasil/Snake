@@ -149,6 +149,24 @@ void Renderer::DrawSelection()
 	glFlush();*/
 }
 
+void Renderer::DrawSprite(Sprite* sprite)
+{
+	MVP = Projection * View * sprite->GetModelMatrix();
+	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniform4fv(unfColor, 1, glm::value_ptr(sprite->GetColor()));
+	glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(sprite->GetAtlasTexcoords()));
+	sprite->Draw();
+}
+
+void Renderer::DrawSpriteSelection(Sprite* sprite)
+{
+	MVP = Projection * View * sprite->GetModelMatrix();
+	glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
+	glUniform1i(unfCode, sprite->GetId());
+	sprite->Draw();
+}
+
+
 unsigned char Renderer::ProcessSelection(int x, int y)
 {
 	unsigned char response[4];
