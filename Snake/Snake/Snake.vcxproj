@@ -84,9 +84,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\external\stb_image\stb_image.c" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Checkbox.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Options.cpp" />
@@ -101,9 +103,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\external\stb_image\stb_image.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Board.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Checkbox.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GUIState.h" />
     <ClInclude Include="Options.h" />

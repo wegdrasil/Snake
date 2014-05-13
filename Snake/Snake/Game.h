@@ -1,33 +1,30 @@
-#ifndef SSTARTGAMEH
-#define SSTARTGAMEH
+#ifndef SGAMEH
+#define SGAMEH
 
 #include "Renderer.h"
 #include "GUI.h"
 #include "Text.h"
 #include "Font.h"
 
-#include "Options.h"
-#include "Game.h"
+#include "Board.h"
 
-class StartGame
+class Game
 {
 	SDL_Window *window;
 	Renderer* renderer;
 	GUI gui;
 	Font* font;
 
-	Text text[5];
-	Button button[4];
-
-	Options options;
-	Game game;
+	Text text[2];
+	Button button;
 
 	unsigned int choosen;
-	int difflevel;
+
+	Board board;
 
 public:
-	StartGame();
-	~StartGame();
+	Game();
+	~Game();
 
 	void Initialize(SDL_Window *w, Renderer* r, Font* f)
 	{
@@ -35,59 +32,26 @@ public:
 		renderer = r;
 		font = f;
 
-		text[0].SetText(font, "SNAKE", 700.0f, 300.0f);
-		text[1].SetText(font, "New Game", 700.0f, 400.0f);
-		text[2].SetText(font, "Hall of Fame", 700.0f, 450.0f);
-		text[3].SetText(font, "Options", 700.0f, 500.0f);
-		text[4].SetText(font, "Quit", 700.0f, 550.0f);
+		text[0].SetText(font, "Points", 650.0f, 1100.0f);
+		text[1].SetText(font, "Quit", 50.0f, 0.0f);
 
-		Sprite* ptr = &button[0].GetSprite();
-		ptr->UpdateModelMatrixClip(glm::vec3(650.0f, 400.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
-		ptr->SetTexCoords(0, 461, 16, 16, 512.0f);
+		Sprite* ptr = &button.GetSprite();
+		ptr->UpdateModelMatrixClip(glm::vec3(0.0f, 0.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
+		ptr->SetTexCoords(0, 424, 13, 13, 512.0f);
 		ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
 		ptr->SetColorActive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		ptr->SetColorHot(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
 		ptr->SetId(100);
 		ptr->Initialize();
 
-		ptr = &button[1].GetSprite();
-		ptr->UpdateModelMatrixClip(glm::vec3(650.0f, 450.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
-		ptr->SetTexCoords(0, 461, 16, 16, 512.0f);
-		ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		ptr->SetColorActive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		ptr->SetColorHot(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
-		ptr->SetId(101);
-		ptr->Initialize();
-
-		ptr = &button[2].GetSprite();
-		ptr->UpdateModelMatrixClip(glm::vec3(650.0f, 500.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
-		ptr->SetTexCoords(0, 461, 16, 16, 512.0f);
-		ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		ptr->SetColorActive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		ptr->SetColorHot(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
-		ptr->SetId(102);
-		ptr->Initialize();
-
-		ptr = &button[3].GetSprite();
-		ptr->UpdateModelMatrixClip(glm::vec3(650.0f, 550.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
-		ptr->SetTexCoords(0, 461, 16, 16, 512.0f);
-		ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
-		ptr->SetColorActive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-		ptr->SetColorHot(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
-		ptr->SetId(103);
-		ptr->Initialize();
-
 		choosen = 0;
-		difflevel = 0;
-		options.Initialize(window, renderer, font);
-		game.Initialize(window, renderer, font);
 
+		board.Initialize(renderer);
 	}
 
 	void GuiUpdate()
 	{
-		for (int i = 0; i < 4; i++)
-			button[i].Logic(&gui.state);
+		button.Logic(&gui.state);
 	}
 
 	void Draw()
@@ -96,14 +60,15 @@ public:
 		glClearBufferfv(GL_COLOR, 0, lightskycolor);
 
 		glUseProgram(renderer->shaderProgram);
-		
-		for (int j = 0; j < 5; j++)
+
+		board.Draw();
+
+		for (int j = 0; j < 2; j++)
 			for (int i = 0; i < text[j].size; i++)
 				renderer->DrawSprite(&text[j].GetSprite()[i]);
-
-		for (int i = 0; i < 4; i++)
-			renderer->DrawSprite(&button[i].GetSprite());
 		
+		renderer->DrawSprite(&button.GetSprite());
+
 		glFlush();
 	}
 
@@ -115,8 +80,8 @@ public:
 		glUseProgram(renderer->selectionProgram);
 
 		for (int i = 0; i < 4; i++)
-			renderer->DrawSpriteSelection(&button[i].GetSprite());
-		
+			renderer->DrawSpriteSelection(&button.GetSprite());
+
 		glFlush();
 	}
 
@@ -137,7 +102,7 @@ public:
 	{
 		bool quit = false;
 		SDL_Event e;
-		
+
 		while (!quit)
 		{
 			while (SDL_PollEvent(&e) != 0)
@@ -150,22 +115,22 @@ public:
 				{
 					gui.state.mouseXLast = gui.state.mouseX;
 					gui.state.mouseYLast = gui.state.mouseY;
-		
+
 					gui.state.mouseX = e.motion.x;
 					gui.state.mouseY = e.motion.y;
-						
+
 					unsigned char id = ProcessSelection(gui.state.mouseX, gui.state.mouseY);
-		
+
 					if (id == 0)
 					{
 						gui.state.idHot = 0;
 						gui.state.hot = false;
 					}
 					else
-					{	
+					{
 						if (gui.state.idHot != id)
 							gui.state.hot = false;
-		
+
 						gui.state.idHot = id;
 						gui.state.hot = true;
 					}
@@ -174,15 +139,15 @@ public:
 				{
 					if (e.button.button == true)
 						gui.state.mousedown = true;
-						
+
 					if (e.button.state == SDL_PRESSED)
 						gui.state.mousepressed = true;
-		
+
 					unsigned char id = ProcessSelection(gui.state.mouseX, gui.state.mouseY);
-					
+
 					choosen = id;
 
-					if ( id == 0)
+					if (id == 0)
 					{
 						gui.state.active = false;
 						gui.state.idIsZero = true;
@@ -193,63 +158,50 @@ public:
 						gui.state.active = true;
 						gui.state.idIsZero = false;
 					}
-					
+
 				}
 				else if (e.type == SDL_MOUSEBUTTONUP)
 				{
 					gui.state.mousepressed = false;
 					if (e.button.button == true)
 						gui.state.mousedown = false;
-		
+
 					gui.state.idActive = 0;
 					gui.state.active = false;
 					gui.state.idIsZero = false;
-		
+
 				}
 				else if (e.type == SDL_WINDOWEVENT)
 				{
 					switch (e.window.event)
 					{
-						case SDL_WINDOWEVENT_RESIZED:
-							renderer->Resize(e.window.data1, e.window.data2);
-							break;
+					case SDL_WINDOWEVENT_RESIZED:
+						renderer->Resize(e.window.data1, e.window.data2);
+						break;
 					}
 				}
 			}
-				
+
 			GuiUpdate();
 
 			switch (choosen)
 			{
-			case 0:
-				//printf("Nothing Picked \n");
-				break;
 			case 100:
-				printf("New Game\n");
-				game.Run();
-				choosen = 0;
-				break;
-			case 101:
-				printf("Hall of Fame\n");
-				break;
-			case 102:
-				difflevel = options.Run();
-				printf("%d\n", difflevel);
-				choosen = 0;
-				break;
-			case 103:
 				printf("Quit\n");
 				quit = true;
+				choosen = 0;
 				break;
 			default:
 				printf("Res: %d\n", choosen);
 			}
 
 			Draw();
-		
+
 			SDL_GL_SwapWindow(window);
 		}
 	}
 };
 #endif
+
+
 
