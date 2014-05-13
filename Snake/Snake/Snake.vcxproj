@@ -92,6 +92,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Scrollbar.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="StartGame.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Textbox.cpp" />
     <ClCompile Include="Widget.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scrollbar.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="StartGame.h" />
     <ClInclude Include="Text.h" />
     <ClInclude Include="Textbox.h" />
     <ClInclude Include="Vertex.h" />

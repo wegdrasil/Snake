@@ -24,6 +24,8 @@ struct Image
 
 class Renderer
 {
+
+public:
 	GLuint shaderProgram;
 	GLuint selectionProgram;
 
@@ -49,12 +51,11 @@ class Renderer
 	GLuint textTexture;
 
 
-public:
 		
 	Renderer();
 	~Renderer();
 	
-	void Initialize(GUI* gui);
+	void Initialize();
 	void Update();
 	void Draw();
 	void DrawSelection();

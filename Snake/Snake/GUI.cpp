@@ -46,24 +46,24 @@ void GUI::Initialize(Font* f)
 	//ptr->Initialize();
 
 	//scrollbar.Initialize();
-	font = f;
+	//font = f;
 
-	checkbox[0].Init(500.0f, 500.0f, font, "ca ramba", 69);
-	checkbox[1].Init(500.0f, 544.0f, font, "batman", 210);
-	checkbox[2].Init(0.0f, 4.0f, font, "nah", 220);
-	checkbox[3].Init(20.0f, 544.0f, font, "checkbox", 230);
+	//checkbox[0].Init(500.0f, 500.0f, font, "ca ramba", 69);
+	//checkbox[1].Init(500.0f, 544.0f, font, "batman", 210);
+	//checkbox[2].Init(0.0f, 4.0f, font, "nah", 220);
+	//checkbox[3].Init(20.0f, 544.0f, font, "checkbox", 230);
 
-	textbox[0].Init(100.0f, 100.0f, font, "abc", 240);
+	//textbox[0].Init(100.0f, 100.0f, font, "abc", 240);
 }
 
 void GUI::Update()
 {
-	checkbox[0].Logic(&state);
-	checkbox[1].Logic(&state);
-	checkbox[2].Logic(&state);
-	checkbox[3].Logic(&state);
+	//checkbox[0].Logic(&state);
+	//checkbox[1].Logic(&state);
+	//checkbox[2].Logic(&state);
+	//checkbox[3].Logic(&state);
 
-	textbox[0].Logic(&state, font);
+	//textbox[0].Logic(&state, font);
 }
 
 void GUI::Draw()

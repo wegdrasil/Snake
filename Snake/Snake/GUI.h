@@ -13,13 +13,13 @@ class GUI
 public:
 	GUIState state;
 
-	Button buttons[1];
-	Scrollbar scrollbar;
-	Checkbox checkbox[4];
-	Font* font;
-	Textbox textbox[1];
+	//Button buttons[1];
+	//Scrollbar scrollbar;
+	//Checkbox checkbox[4];
+	//Font* font;
+	//Textbox textbox[1];
 
-	float background;
+	//float background;
 	
 	GUI();
 	~GUI();

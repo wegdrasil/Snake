@@ -14,9 +14,9 @@ Renderer::Renderer()
 
 Renderer::~Renderer(){}
 
-void Renderer::Initialize(GUI* g)
+void Renderer::Initialize()
 {
-	gui = g;
+	//gui = g;
 
 	LoadImage(&textImage, "Textures\\testta.png");
 
@@ -65,13 +65,11 @@ void Renderer::Update()
 
 void Renderer::Draw()
 {
-	const float lightskycolor[] = { gui->background, 0.81f, 0.98f, 0.0f };
+	/*const float lightskycolor[] = { gui->background, 0.81f, 0.98f, 0.0f };
 	glClearBufferfv(GL_COLOR, 0, lightskycolor);
 
 	glUseProgram(shaderProgram);
 
-	//for (int i = 0; i < 3; i++)
-	//{
 	
 
 	for (int i = 0; i < 4; i++)
@@ -93,18 +91,7 @@ void Renderer::Draw()
 		glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(sprite->GetAtlasTexcoords()));
 		sprite->Draw();
 	}
-//}
 
-	//MVP = Projection * View * gui->scrollbar.buttons[1].GetSprite().GetModelMatrix();
-	//glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-	//glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[1].GetSprite().GetColor()));
-	//gui->scrollbar.buttons[1].GetSprite().Draw();
-	//
-	//MVP = Projection * View * gui->scrollbar.buttons[0].GetSprite().GetModelMatrix();
-	//glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-	//glUniform4fv(unfColor, 1, glm::value_ptr(gui->scrollbar.buttons[0].GetSprite().GetColor()));
-	////glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(gui->scrollbar.buttons[0].GetSprite().GetAtlasTexcoords()));
-	//gui->scrollbar.buttons[0].GetSprite().Draw();
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -131,12 +118,12 @@ void Renderer::Draw()
 			text->GetSprite()[i].Draw();
 		}
 	}
-	glFlush();
+	glFlush();*/
 }
 
 void Renderer::DrawSelection()
 {
-	const float blackcolor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	/*const float blackcolor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	glClearBufferfv(GL_COLOR, 0, blackcolor);
 
 	glUseProgram(selectionProgram);
@@ -158,31 +145,8 @@ void Renderer::DrawSelection()
 		glUniform1i(unfCode, sprite->GetId());
 		sprite->Draw();
 	}
-	/*Sprite* sprite = &gui->checkbox.GetButtonSprite();
-	MVP = Projection * View * sprite->GetModelMatrix();
-	glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-	glUniform1i(unfCode, sprite->GetId());
-	sprite->Draw();*/
-
-	//for (int i = 0; i < 3; i++)
-	//{
-	//	MVP = Projection * View * gui->buttons[i].GetSprite().GetModelMatrix();
-	//	glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-	//	glUniform1i(unfCode, gui->buttons[i].GetSprite().GetId());
-	//	gui->buttons[i].GetSprite().Draw();
-	//}
-
-	//MVP = Projection * View * gui->scrollbar.buttons[1].GetSprite().GetModelMatrix();
-	//glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-	//glUniform1i(unfCode, gui->scrollbar.buttons[1].GetSprite().GetId());
-	//gui->scrollbar.buttons[1].GetSprite().Draw();
-	//
-	//MVP = Projection * View * gui->scrollbar.buttons[0].GetSprite().GetModelMatrix();
-	//glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-	//glUniform1i(unfCode, gui->scrollbar.buttons[0].GetSprite().GetId());
-	//gui->scrollbar.buttons[0].GetSprite().Draw();
 	
-	glFlush();
+	glFlush();*/
 }
 
 unsigned char Renderer::ProcessSelection(int x, int y)
@@ -230,8 +194,6 @@ void Renderer::LoadImage(Image* image, const char* filename)
 			bottom++;
 		}
 	}
-
-	
 }
 
 GLuint Renderer::CreateShaderFromTextFile(GLenum shadertype, char const* filename)

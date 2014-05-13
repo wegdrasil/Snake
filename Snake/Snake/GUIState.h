@@ -1,5 +1,6 @@
 #ifndef SGUISTATEH
 #define SGUISTATEH
+#include <string>
 
 struct GUIState
 {

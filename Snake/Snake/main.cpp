@@ -12,7 +12,7 @@ int main(int argc, char *args[])
 	App app;
 
 	app.Initialize();
-	app.Run();
+	//app.Run();
 
 	return 0;
 }
