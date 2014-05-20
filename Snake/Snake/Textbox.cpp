@@ -22,8 +22,6 @@ void Textbox::Init(float x, float y, Font* font, std::string sText, int id)
 	sprite->SetTextured(true);
 	sprite->Initialize();
 
-	//mText.SetText(font, "textbox", x + 17 , y + 15);
-
 	on = false;
 	mPosX = x;
 	mPosY = y;
@@ -49,7 +47,7 @@ void Textbox::Logic(GUIState* state, Font* font)
 	}
 	else
 	{
-		IfInactive();  //bad solution :(
+		IfInactive();
 	}
 	if (state->idIsZero)
 	{

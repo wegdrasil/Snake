@@ -1,32 +1,29 @@
-#include "Options.h"
+#include "Loser.h"
 
 
-Options::Options()
+Loser::Loser()
 {
 }
 
 
-Options::~Options()
+Loser::~Loser()
 {
 }
 
-void Options::Initialize(SDL_Window *w, Renderer* r, Font* f)
+void Loser::Initialize(SDL_Window *w, Renderer* r, Font* f)
 {
 	window = w;
 	renderer = r;
 	font = f;
 
-	text[0].SetText(font, "Options", 730.0f, 350.0f);
-	text[1].SetText(font, "Choose level of difficulty", 550.0f, 400.0f);
-	text[2].SetText(font, "return to the menu", 650.0f, 700.0f);
+	text[0].SetText(font, "Put your name on hall of fame and go back to menu", 250.0f, 450.0f);
+	text[1].SetText(font, "next", 650.0f, 650.0f);
 
-	checkbox[0].Init(600.0f, 450.0f, font, "easy (default)", 200);
-	checkbox[1].Init(600.0f, 500.0f, font, "medium ", 201);
-	checkbox[2].Init(600.0f, 550.0f, font, "hard", 202);
+	textbox.Init(550.0f, 550.0f, font, "abc", 240);
 
 	Sprite* ptr = &button.GetSprite();
-	ptr->UpdateModelMatrixClip(glm::vec3(600.0f, 700.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
-	ptr->SetTexCoords(0, 424, 13, 13, 512.0f);
+	ptr->UpdateModelMatrixClip(glm::vec3(750.0f, 650.0f, 0.0f), 0.0f, glm::vec3(44.0f, 44, 0.0f));
+	ptr->SetTexCoords(0, 461, 16, 16, 512.0f);
 	ptr->SetColorInactive(glm::vec4(0.8f, 0.8f, 0.8f, 1.0f));
 	ptr->SetColorActive(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	ptr->SetColorHot(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
@@ -36,58 +33,50 @@ void Options::Initialize(SDL_Window *w, Renderer* r, Font* f)
 	choosen = 0;
 }
 
-void Options::GuiUpdate()
+void Loser::GuiUpdate()
 {
-	for (int i = 0; i < 3; i++)
-		checkbox[i].Logic(&gui.state);
-
+	textbox.Logic(&gui.state, font);
 	button.Logic(&gui.state);
 }
 
-void Options::Draw()
+void Loser::Draw()
 {
 	const float lightskycolor[] = { 0.305f, 0.305f, 0.305f, 0.0f };
 	glClearBufferfv(GL_COLOR, 0, lightskycolor);
 
 	glUseProgram(renderer->shaderProgram);
 
-	renderer->DrawSprite(&button.GetSprite());
 
-	for (int i = 0; i < 3; i++)
-		renderer->DrawSprite(&checkbox[i].GetButtonSprite());
-
-	for (int j = 0; j < 3; j++)
-	{
-		Text* ptr = &checkbox[j].GetText();
-		for (int i = 0; i < ptr->size; i++)
-		{
-			renderer->DrawSprite(&ptr->GetSprite()[i]);
-		}
-	}
-
-	for (int j = 0; j < 3; j++)
+	for (int j = 0; j < 2; j++)
 	for (int i = 0; i < text[j].size; i++)
 		renderer->DrawSprite(&text[j].GetSprite()[i]);
 
+	renderer->DrawSprite(&textbox.GetButtonSprite());
+
+	for (int i = 0; i < textbox.GetText().size; i++)
+	{
+		renderer->DrawSprite(&textbox.GetText().GetSprite()[i]);
+	}
+
+
+	renderer->DrawSprite(&button.GetSprite());
 	glFlush();
 }
 
-void Options::DrawSelection()
+void Loser::DrawSelection()
 {
 	const float blackcolor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	glClearBufferfv(GL_COLOR, 0, blackcolor);
 
 	glUseProgram(renderer->selectionProgram);
 
+	renderer->DrawSpriteSelection(&textbox.GetButtonSprite());
+
 	renderer->DrawSpriteSelection(&button.GetSprite());
-
-	for (int i = 0; i < 3; i++)
-		renderer->DrawSpriteSelection(&checkbox[i].GetButtonSprite());
-
 	glFlush();
 }
 
-unsigned char Options::ProcessSelection(int x, int y)
+unsigned char Loser::ProcessSelection(int x, int y)
 {
 	unsigned char response[4];
 	GLint viewport[4];
@@ -100,17 +89,40 @@ unsigned char Options::ProcessSelection(int x, int y)
 
 	return response[0];
 }
-int Options::Run()
+Score Loser::Run(int points)
 {
 	bool quit = false;
 	SDL_Event e;
+	inputText = "";
 
 	while (!quit)
 	{
 		while (SDL_PollEvent(&e) != 0)
 		{
 
-			if (e.type == SDL_MOUSEMOTION)
+			if (e.type == SDL_KEYDOWN)
+			{
+				if (e.key.keysym.sym == SDLK_BACKSPACE && inputText.length() > 0)
+				{
+					if (gui.state.activeTextbox)
+					{
+						inputText.pop_back();
+						gui.ReceiveText(inputText);
+					}
+				}
+			}
+			else if (e.type == SDL_TEXTINPUT)
+			{
+				if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
+				{
+					if (gui.state.activeTextbox && inputText.size() < 15)
+					{
+						inputText += e.text.text;
+						gui.ReceiveText(inputText);
+					}
+				}
+			}
+			else if (e.type == SDL_MOUSEMOTION)
 			{
 				gui.state.mouseXLast = gui.state.mouseX;
 				gui.state.mouseYLast = gui.state.mouseY;
@@ -169,6 +181,8 @@ int Options::Run()
 				gui.state.active = false;
 				gui.state.idIsZero = false;
 
+
+
 			}
 			else if (e.type == SDL_WINDOWEVENT)
 			{
@@ -181,24 +195,25 @@ int Options::Run()
 			}
 
 			GuiUpdate();
-
+			Draw();
 			switch (choosen)
 			{
 			case 100:
 				quit = true;
 				choosen = 0;
-				break;
+				score.name = inputText;
+				score.points = points;
+				printf("100\n");
+				return  score;
 			default:
 				;
 			}
 
-			Draw();
-
 			SDL_GL_SwapWindow(window);
+
 		}
 	}
-
-	for (int i = 0; i < 3; i++)
-	if (checkbox[i].on)
-		return i;
+	score.name = "noname";
+	score.points = -2;
+	return  score;
 }

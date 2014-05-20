@@ -14,9 +14,7 @@ Sprite::Sprite()
 	indices[3] = 1;
 	indices[4] = 3;
 	indices[5] = 2;
-
-	//ModelMatrix = glm::mat4(3.0f);
-
+	
 	posXclip = 0;
 	posYclip = 0;
 }

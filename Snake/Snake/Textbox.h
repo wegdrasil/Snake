@@ -22,6 +22,8 @@ public:
 	Text& GetText() { return mText; }
 	Button& GetButton() { return mButton; }
 
+	std::string GetString(){ return mString; }
+
 	void Init(float x, float y, Font* font, std::string sText, int id);
 
 	void Logic(GUIState* state, Font* font);

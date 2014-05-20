@@ -2,7 +2,7 @@
 
 Renderer::Renderer()
 {
-	Projection = glm::mat4(1.0f); //glm::perspective(45.0f, 800.0f / 600.0f, 0.0f, 100.0f);
+	Projection = glm::mat4(1.0f);
 	View = glm::mat4(1.0f);
 	Model = glm::mat4(1.0f);
 
@@ -16,9 +16,7 @@ Renderer::~Renderer(){}
 
 void Renderer::Initialize()
 {
-	//gui = g;
-
-	LoadImage(&textImage, "Textures\\testta.png");
+	LoadImage(&textImage, "Textures\\tekstura.png");
 
 	glGenTextures(1, &textTexture);
 	glBindTexture(GL_TEXTURE_2D, textTexture);
@@ -60,94 +58,11 @@ void Renderer::Initialize()
 
 void Renderer::Update()
 {
-	//View = glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-void Renderer::Draw()
-{
-	/*const float lightskycolor[] = { gui->background, 0.81f, 0.98f, 0.0f };
-	glClearBufferfv(GL_COLOR, 0, lightskycolor);
+void Renderer::Draw() {}
 
-	glUseProgram(shaderProgram);
-
-	
-
-	for (int i = 0; i < 4; i++)
-	{
-		Sprite* sprite = &gui->checkbox[i].GetButtonSprite();
-		MVP = Projection * View * sprite->GetModelMatrix();
-		glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniform4fv(unfColor, 1, glm::value_ptr(sprite->GetColor()));
-		glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(sprite->GetAtlasTexcoords()));
-		sprite->Draw();
-	}
-
-	for (int i = 0; i < 1; i++)
-	{
-		Sprite* sprite = &gui->textbox[i].GetButtonSprite();
-		MVP = Projection * View * sprite->GetModelMatrix();
-		glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniform4fv(unfColor, 1, glm::value_ptr(sprite->GetColor()));
-		glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(sprite->GetAtlasTexcoords()));
-		sprite->Draw();
-	}
-
-
-	for (int i = 0; i < 4; i++)
-	{
-		Text* text = &gui->checkbox[i].GetText();
-		for (int i = 0; i < text->size; i++)
-		{
-			MVP = Projection * View * text->GetSprite()[i].GetModelMatrix();
-			glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-			glUniform4fv(unfColor, 1, glm::value_ptr(text->GetSprite()[i].GetColor()));
-			glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(text->GetSprite()[i].GetAtlasTexcoords()));
-			text->GetSprite()[i].Draw();
-		}
-	}
-
-	for (int i = 0; i < 1; i++)
-	{
-		Text* text = &gui->textbox[i].GetText();
-		for (int i = 0; i < text->size; i++)
-		{
-			MVP = Projection * View * text->GetSprite()[i].GetModelMatrix();
-			glUniformMatrix4fv(unfMat, 1, GL_FALSE, glm::value_ptr(MVP));
-			glUniform4fv(unfColor, 1, glm::value_ptr(text->GetSprite()[i].GetColor()));
-			glUniform4fv(unfAtlasTexcoords, 1, glm::value_ptr(text->GetSprite()[i].GetAtlasTexcoords()));
-			text->GetSprite()[i].Draw();
-		}
-	}
-	glFlush();*/
-}
-
-void Renderer::DrawSelection()
-{
-	/*const float blackcolor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	glClearBufferfv(GL_COLOR, 0, blackcolor);
-
-	glUseProgram(selectionProgram);
-	
-	for (int i = 0; i < 4; i++)
-	{
-		Sprite* sprite = &gui->checkbox[i].GetButtonSprite();
-		MVP = Projection * View * sprite->GetModelMatrix();
-		glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniform1i(unfCode, sprite->GetId());
-		sprite->Draw();
-	}
-
-	for (int i = 0; i < 1; i++)
-	{
-		Sprite* sprite = &gui->textbox[i].GetButtonSprite();
-		MVP = Projection * View * sprite->GetModelMatrix();
-		glUniformMatrix4fv(unfMatSel, 1, GL_FALSE, glm::value_ptr(MVP));
-		glUniform1i(unfCode, sprite->GetId());
-		sprite->Draw();
-	}
-	
-	glFlush();*/
-}
+void Renderer::DrawSelection() {}
 
 void Renderer::DrawSprite(Sprite* sprite)
 {

@@ -1,36 +1,35 @@
-#ifndef SSTARTGAMEH
-#define SSTARTGAMEH
+#ifndef SLOSERH
+#define SLOSERH
 
 #include "Renderer.h"
 #include "GUI.h"
 #include "Text.h"
 #include "Font.h"
+#include "Textbox.h"
 
-#include "Options.h"
-#include "Game.h"
-#include "HallOfFame.h"
 #include "Score.h"
+#include <string>
 
-class StartGame
+class Loser
 {
 	SDL_Window *window;
 	Renderer* renderer;
 	GUI gui;
 	Font* font;
 
-	Text text[5];
-	Button button[4];
+	Text text[2];
+	Textbox textbox;
 
-	Options options;
-	Game* game;
-	HallOfFame hall;
-	Score lastscore;
+	Button button;
+
 	unsigned int choosen;
-	int difflevel;
+	std::string inputText;
+
+	Score score;
 
 public:
-	StartGame();
-	~StartGame();
+	Loser();
+	~Loser();
 
 	void Initialize(SDL_Window *w, Renderer* r, Font* f);
 
@@ -41,7 +40,10 @@ public:
 	void DrawSelection();
 
 	unsigned char ProcessSelection(int x, int y);
-	void Run();
+	Score Run(int points);
 };
 #endif
+
+
+
 

@@ -18,18 +18,16 @@ class Sprite
 	int posXclip;
 	int posYclip;
 
-//TODO:	it should not be here, move it to button class?
 	glm::vec4 colorHot;
 	glm::vec4 colorInactive;
 	glm::vec4 colorActive;
 
-	GLuint VAO; // ?what about sprite batch, for optimalization? 
+	GLuint VAO;
 	GLuint VBO;
 	GLuint IBO;
 
 	glm::mat4 ModelMatrix;
 	
-//TODO:	it should not be here, move it to button class? Only buttons are clickable
 	int idUniform;
 
 	bool textured;
@@ -50,6 +48,7 @@ public:
 
 	void SetPositionClip(int x, int y)	{ posXclip = x; posYclip = y; };
 
+	void SetIdendityModelMatrix() { ModelMatrix = glm::mat4(1.0f); }
 	glm::mat4& GetModelMatrix() { return ModelMatrix; };
 
 	glm::vec4& GetColor() { return color; }
